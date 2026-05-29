@@ -1,0 +1,125 @@
+{{ define "main" }}
+<div id="app">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <span class="logo">yield<span class="logo-dim">.fi</span></span>
+        <span class="tagline">{{ .Site.Params.description }}</span>
+      </div>
+      <div class="live-indicator">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="live-label">Live rates</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metrics Bar -->
+  <section class="metrics-bar" aria-label="Summary statistics">
+    <div class="metric-card">
+      <div class="metric-label">Avg APY</div>
+      <div class="metric-value green" id="stat-avg-apy">—</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total TVL</div>
+      <div class="metric-value" id="stat-tvl">—</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Best APY</div>
+      <div class="metric-value green" id="stat-best">—</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Markets</div>
+      <div class="metric-value" id="stat-count">—</div>
+    </div>
+  </section>
+
+  <!-- Controls -->
+  <section class="controls" aria-label="Filter and sort controls">
+    <div class="filter-row">
+
+      <!-- Token Filter -->
+      <div class="filter-group" role="group" aria-label="Filter by token">
+        <button class="filter-btn active" data-token="all">All</button>
+        <button class="filter-btn" data-token="USDC">USDC</button>
+        <button class="filter-btn" data-token="USDT">USDT</button>
+      </div>
+
+      <!-- Chain Filter -->
+      <div class="filter-group chain-filter" role="group" aria-label="Filter by chain">
+        <button class="filter-btn active" data-chain="all">All</button>
+        <button class="filter-btn chain-btn" data-chain="Ethereum">
+          <span class="btn-logo" data-chain-logo="Ethereum"></span>Ethereum
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Arbitrum">
+          <span class="btn-logo" data-chain-logo="Arbitrum"></span>Arbitrum
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Base">
+          <span class="btn-logo" data-chain-logo="Base"></span>Base
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Polygon">
+          <span class="btn-logo" data-chain-logo="Polygon"></span>Polygon
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Avalanche">
+          <span class="btn-logo" data-chain-logo="Avalanche"></span>Avalanche
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Solana">
+          <span class="btn-logo" data-chain-logo="Solana"></span>Solana
+        </button>
+        <button class="filter-btn chain-btn" data-chain="Optimism">
+          <span class="btn-logo" data-chain-logo="Optimism"></span>Optimism
+        </button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <!-- Sort -->
+      <select class="sort-select" id="sort-select" aria-label="Sort markets">
+        <option value="apy">Highest APY</option>
+        <option value="tvl">Highest TVL</option>
+        <option value="risk">Lowest Risk</option>
+        <option value="7d">7d Change</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <main class="table-section">
+    <div class="table-wrap" role="region" aria-label="Yield markets">
+      <table id="markets-table" aria-live="polite">
+        <thead>
+          <tr>
+            <th class="col-protocol" scope="col">Protocol</th>
+            <th class="col-chain" scope="col">Chain</th>
+            <th class="col-token" scope="col">Token</th>
+            <th class="col-apy sortable sorted" scope="col" data-sort="apy">
+              APY <span class="sort-arrow" aria-hidden="true">↓</span>
+            </th>
+            <th class="col-tvl sortable" scope="col" data-sort="tvl">
+              TVL <span class="sort-arrow" aria-hidden="true"></span>
+            </th>
+            <th class="col-7d sortable" scope="col" data-sort="7d">
+              7d Δ <span class="sort-arrow" aria-hidden="true"></span>
+            </th>
+            <th class="col-util" scope="col">Utilization</th>
+            <th class="col-risk sortable" scope="col" data-sort="risk">
+              Risk <span class="sort-arrow" aria-hidden="true"></span>
+            </th>
+            <th class="col-action" scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="8" class="loading-row">Loading markets…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="table-footer">
+      <span id="count-note" class="footer-note"></span>
+      <span class="footer-note">Auto-refreshes every 60s &middot; Data via <a href="https://defillama.com" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:underline">DefiLlama</a></span>
+    </footer>
+  </main>
+
+</div>
+{{ end }}

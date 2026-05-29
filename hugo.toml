@@ -1,0 +1,6 @@
+baseURL = "https://yield.fi/"
+languageCode = "en-us"
+title = "yield.fi"
+[params]
+  description = "Stablecoin lending rates across major chains"
+  tagline = "USDC & USDT yield aggregator"

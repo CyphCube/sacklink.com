@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ .Site.Title }} — {{ .Site.Params.tagline }}</title>
+  <meta name="description" content="{{ .Site.Params.description }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}" />
+</head>
+<body>
+  {{ block "main" . }}{{ end }}
+  <script src="{{ "js/risk.js" | relURL }}"></script>
+  <script src="{{ "js/data.js" | relURL }}"></script>
+  <script src="{{ "js/chains.js" | relURL }}"></script>
+  <script src="{{ "js/app.js" | relURL }}"></script>
+</body>
+</html>
