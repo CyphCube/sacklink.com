@@ -1,6 +1,6 @@
-baseURL = "https://yield.fi/"
+baseURL = "https://sacklink.com/"
 languageCode = "en-us"
-title = "yield.fi"
+title = "Sacklink"
 [params]
   description = "Stablecoin lending rates across major chains"
   tagline = "USDC & USDT yield aggregator"

@@ -92,29 +92,34 @@
 
     if (!sorted.length) {
       document.getElementById('tbody').innerHTML =
-        '<tr><td colspan="8" class="loading-row">No markets match your filters.</td></tr>';
+        '<tr><td colspan="7" class="loading-row">No markets match your filters.</td></tr>';
       return;
     }
 
     document.getElementById('tbody').innerHTML = sorted.map((r, i) => {
-      const tvlPct   = Math.round((r.tvl / maxTVL) * 100);
-      const utilHigh = r.util > 88;
-      // Link: prefer direct product page, fall back to DefiLlama pool page
-      const href = r.productUrl || r.poolUrl;
+      const tvlPct  = Math.round((r.tvl / maxTVL) * 100);
+      const rowAttr = r.url
+        ? `class="market-row clickable" data-href="${escHtml(r.url)}"`
+        : `class="market-row"`;
 
-      return `<tr class="market-row" data-href="${escHtml(href)}">
+      /* Protocol logo: use <img> with inline SVG fallback on error */
+      const fallbackLetter = escHtml(r.protocol[0].toUpperCase());
+      const logoHtml = r.logoSvg
+        ? `<span class="protocol-logo-svg">${r.logoSvg}</span>`
+        : `<img
+            class="protocol-logo"
+            src="${escHtml(r.logoUrl)}"
+            alt="${escHtml(r.protocol)}"
+            width="28" height="28"
+            loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          /><span class="protocol-logo-fallback" style="display:none">${fallbackLetter}</span>`;
+
+      return `<tr ${rowAttr}>
         <td>
           <div class="protocol-cell">
             <div class="protocol-logo-wrap">
-              <img
-                class="protocol-logo"
-                src="${escHtml(r.logoUrl)}"
-                alt="${escHtml(r.protocol)}"
-                width="28" height="28"
-                loading="lazy"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-              />
-              <span class="protocol-logo-fallback" style="display:none">${escHtml(r.protocol[0])}</span>
+              ${logoHtml}
             </div>
             <div>
               <div class="protocol-name">
@@ -151,15 +156,6 @@
           </span>
         </td>
         <td>
-          <div class="util-cell">
-            <span class="util-val">${r.util}%</span>
-            <div class="bar-wrap">
-              <div class="bar-fill ${utilHigh ? 'red' : 'green'}"
-                   style="width:${r.util}%"></div>
-            </div>
-          </div>
-        </td>
-        <td>
           <div class="risk-cell" title="Score: ${r.riskScore}/100 · TVL:${r.riskDetail.tvl} Volatility:${r.riskDetail.sigma} Age:${r.riskDetail.count} Drift:${r.riskDetail.drift} Confidence:${r.riskDetail.conf}">
             <div class="risk-row">
               <span class="risk-badge ${riskClass(r.risk)}">${r.risk}</span>
@@ -170,11 +166,6 @@
             </div>
           </div>
         </td>
-        <td class="action-col">
-          <a class="deposit-btn" href="${escHtml(href)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
-            Deposit ↗
-          </a>
-        </td>
       </tr>`;
     }).join('');
   }
@@ -182,17 +173,10 @@
   /* ── Loading / error states ── */
   function setLoading() {
     document.getElementById('tbody').innerHTML =
-      '<tr><td colspan="8" class="loading-row">Fetching live rates from DefiLlama…</td></tr>';
+      '<tr><td colspan="7" class="loading-row">Fetching live rates from DefiLlama…</td></tr>';
     ['stat-avg-apy','stat-tvl','stat-best','stat-count'].forEach(id => {
       document.getElementById(id).textContent = '…';
     });
-  }
-
-  function setError(msg) {
-    document.getElementById('tbody').innerHTML =
-      `<tr><td colspan="8" class="loading-row" style="color:var(--red)">
-        ⚠ ${escHtml(msg)} — showing last cached data.
-      </td></tr>`;
   }
 
   /* ── Refresh from API ── */
@@ -200,20 +184,15 @@
     try {
       await window.fetchMarkets();
       renderTable();
-      updateLastUpdated();
     } catch (err) {
       console.error('DefiLlama fetch failed:', err);
       if (!window.MARKETS || !window.MARKETS.length) {
-        setError('Could not load live data.');
+        document.getElementById('tbody').innerHTML =
+          '<tr><td colspan="7" class="loading-row" style="color:var(--red)">⚠ Could not load live data.</td></tr>';
       } else {
-        renderTable(); // keep showing stale data
+        renderTable();
       }
     }
-  }
-
-  function updateLastUpdated() {
-    const el = document.getElementById('count-note');
-    // we update this after render; just keep it as-is
   }
 
   /* ── Sort header arrows ── */
@@ -287,13 +266,11 @@
     });
   }
 
-  /* ── Row click → navigate to product ── */
+  /* ── Row click → navigate to protocol ── */
   function bindRowClicks() {
     document.getElementById('tbody').addEventListener('click', e => {
-      const row = e.target.closest('tr.market-row');
+      const row = e.target.closest('tr.clickable');
       if (!row) return;
-      // Don't fire if they clicked the deposit button itself
-      if (e.target.closest('.deposit-btn')) return;
       const href = row.dataset.href;
       if (href) window.open(href, '_blank', 'noopener,noreferrer');
     });

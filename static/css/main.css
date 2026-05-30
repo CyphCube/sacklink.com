@@ -317,15 +317,13 @@ tbody td {
 }
 
 /* Column widths */
-.col-protocol { width: 20%; }
-.col-chain    { width: 12%; }
-.col-token    { width: 8%; }
-.col-apy      { width: 10%; }
-.col-tvl      { width: 13%; }
-.col-7d       { width: 9%; }
-.col-util     { width: 9%; }
-.col-risk     { width: 11%; }
-.col-action   { width: 8%; }
+.col-protocol { width: 26%; }
+.col-chain    { width: 16%; }
+.col-token    { width: 10%; }
+.col-apy      { width: 13%; }
+.col-tvl      { width: 16%; }
+.col-7d       { width: 10%; }
+.col-risk     { width: 9%; }
 
 /* ── Protocol logo cell ── */
 .protocol-cell {
@@ -350,6 +348,22 @@ tbody td {
   background: var(--bg-elevated);
 }
 
+
+.protocol-logo-svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.protocol-logo-svg svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
 .protocol-logo-fallback {
   width: 28px;
   height: 28px;
@@ -370,35 +384,6 @@ tbody tr.market-row {
   cursor: pointer;
 }
 
-/* ── Deposit button ── */
-.action-col {
-  text-align: right;
-  padding-right: 16px !important;
-}
-
-.deposit-btn {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--green);
-  border: 1px solid var(--green-dim);
-  border-radius: 5px;
-  padding: 4px 10px;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
-  opacity: 0;
-}
-
-tbody tr.market-row:hover .deposit-btn {
-  opacity: 1;
-}
-
-.deposit-btn:hover {
-  background: var(--green);
-  color: #000;
-}
 
 /* ── Cell components ── */
 .protocol-name {
@@ -507,18 +492,7 @@ tbody tr.market-row:hover .deposit-btn {
 .trend.up { color: var(--green); }
 .trend.dn { color: var(--red); }
 
-.util-cell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 
-.util-val {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-secondary);
-  min-width: 32px;
-}
 
 .risk-cell {
   display: flex;
@@ -650,7 +624,7 @@ tbody tr.market-row:hover .deposit-btn {
 }
 
 @media (max-width: 900px) {
-  .col-7d, .col-util { display: none; }
+  .col-7d { display: none; }
   .chain-filter .filter-btn[data-chain="Polygon"],
   .chain-filter .filter-btn[data-chain="Solana"] { display: none; }
   .chain-name { display: none; }
