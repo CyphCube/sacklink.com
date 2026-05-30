@@ -102,11 +102,9 @@
         ? `class="market-row clickable" data-href="${escHtml(r.url)}"`
         : `class="market-row"`;
 
-      /* Protocol logo: use <img> with inline SVG fallback on error */
+      /* Protocol logo — CDN img with lettered fallback on error */
       const fallbackLetter = escHtml(r.protocol[0].toUpperCase());
-      const logoHtml = r.logoSvg
-        ? `<span class="protocol-logo-svg">${r.logoSvg}</span>`
-        : `<img
+      const logoHtml = `<img
             class="protocol-logo"
             src="${escHtml(r.logoUrl)}"
             alt="${escHtml(r.protocol)}"

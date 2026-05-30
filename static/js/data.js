@@ -18,40 +18,74 @@ const ALLOWED_CHAINS = new Set([
 
 /* Display names */
 const PROTOCOL_NAMES = {
-  'aave-v3':           'Aave v3',
-  'aave-v2':           'Aave v2',
-  'compound-v3':       'Compound v3',
-  'compound-v2':       'Compound v2',
-  'morpho-blue':       'Morpho Blue',
-  'morpho':            'Morpho',
-  'spark':             'Spark',
-  'sparklend':         'Spark',
-  'fluid':             'Fluid',
-  'euler':             'Euler',
-  'euler-v2':          'Euler v2',
-  'kamino':            'Kamino',
-  'kamino-lend':       'Kamino',
-  'marginfi':          'MarginFi',
-  'drift-protocol':    'Drift',
-  'solend':            'Solend',
-  'venus':             'Venus',
-  'benqi':             'Benqi',
-  'moonwell':          'Moonwell',
-  'radiant':           'Radiant',
-  'silo':              'Silo',
-  'clearpool':         'Clearpool',
-  'exactlyprotocol':   'Exactly',
-  'seamless-protocol': 'Seamless',
-  'maple':             'Maple',
-  'sprinter':          'Sprinter',
-  'ember-protocol':    'Ember',
-  'avantis':           'Avantis',
-  'yieldseeker':       'YieldSeeker',
-  'grove-finance':     'Grove',
-  'upshift':           'Upshift',
-  'veda':              'Veda',
-  'concrete':          'Concrete',
-  'lagoon':            'Lagoon',
+  'aave-v3':                        'Aave v3',
+  'aave-v2':                        'Aave v2',
+  'compound-v3':                    'Compound v3',
+  'compound-v2':                    'Compound v2',
+  'morpho-blue':                    'Morpho Blue',
+  'morpho':                         'Morpho',
+  'spark':                          'Spark',
+  'spark-savings':                  'Spark Savings',
+  'sparklend':                      'Spark',
+  'fluid':                          'Fluid',
+  'fluid-lite':                     'Fluid Lite',
+  'fluid-lending':                  'Fluid Lending',
+  'euler':                          'Euler',
+  'euler-v2':                       'Euler v2',
+  'kamino':                         'Kamino',
+  'kamino-lend':                    'Kamino',
+  'marginfi':                       'MarginFi',
+  'drift-protocol':                 'Drift',
+  'solend':                         'Solend',
+  'venus':                          'Venus',
+  'benqi':                          'Benqi',
+  'benqi-lending':                  'Benqi Lending',
+  'moonwell':                       'Moonwell',
+  'moonwell-lending':               'Moonwell Lending',
+  'radiant':                        'Radiant',
+  'silo':                           'Silo',
+  'clearpool':                      'Clearpool',
+  'exactlyprotocol':                'Exactly',
+  'seamless-protocol':              'Seamless',
+  'maple':                          'Maple',
+  'sprinter':                       'Sprinter',
+  'lazy':                           'Lazy',
+  'lazy-summer-protocol':           'Lazy Summer',
+  'ember-protocol':                 'Ember',
+  'avantis':                        'Avantis',
+  'bracket-vaults':                 'Bracket Vaults',
+  'yieldseeker':                    'YieldSeeker',
+  'goldfinch':                      'Goldfinch',
+  'harvest-finance':                'Harvest Finance',
+  'dolomite':                       'Dolomite',
+  'zerobase-cedefi':                'Zerobase',
+  'autofinance':                    'Autofinance',
+  'loopscale':                      'Loopscale',
+  'deltaprime':                     'Deltaprime',
+  'extra-finance-leverage-farming': 'Extra Finance',
+  'gains-network':                  'Gains Network',
+  'jupiter-lend':                   'Jupiter Lend',
+  'beefy':                          'Beefy',
+  'flux-finance':                   'Flux Finance',
+  'ample':                          'Ample',
+  'folks-finance-xchain':           'Folks Finance',
+  'centrifuge-protocol':            'Centrifuge',
+  'yo-protocol':                    'Yo Protocol',
+  'termmax':                        'Termmax',
+  'across':                         'Across',
+  'yearn-finance':                  'Yearn Finance',
+  'fusion-by-ipor':                 'Fusion by IPOR',
+  'spectra-metavaults':             'Spectra',
+  'save':                           'Save',
+  'vesper':                         'Vesper',
+  'lista-lending':                  'Lista Lending',
+  'credix':                         'Credix',
+  'allbridge-classic':              'Allbridge',
+  'grove-finance':                  'Grove',
+  'upshift':                        'Upshift',
+  'veda':                           'Veda',
+  'concrete':                       'Concrete',
+  'lagoon':                         'Lagoon',
 };
 
 function protocolName(slug) {
@@ -60,75 +94,74 @@ function protocolName(slug) {
 }
 
 /*
- * Inline SVG logos for protocols that don't have an icon on DefiLlama CDN.
- * Keyed by project slug. These show instead of the broken <img>.
+ * Logo slug map: project slug → DefiLlama CDN slug (when different).
+ * All entries below resolve to https://icons.llamao.fi/icons/protocols/{cdnSlug}?w=48&h=48
+ * If a slug isn't listed here, we use the project slug directly.
  */
-const INLINE_LOGOS = {
-  'sprinter': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#1a1a2e"/>
-    <path d="M6 10h10c3.3 0 6 1.3 6 4s-2.7 4-6 4H6" stroke="#7B61FF" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <path d="M6 14h8" stroke="#7B61FF" stroke-width="2.5" stroke-linecap="round"/>
-  </svg>`,
-
-  'ember-protocol': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#1a0e00"/>
-    <path d="M14 5 C14 5 20 10 20 16 C20 19.3 17.3 22 14 22 C10.7 22 8 19.3 8 16 C8 12 11 8 14 5Z" fill="#FF6B00" opacity="0.9"/>
-    <path d="M14 11 C14 11 17 14 17 17 C17 18.7 15.7 20 14 20 C12.3 20 11 18.7 11 17 C11 14.5 12.5 12 14 11Z" fill="#FFD166"/>
-  </svg>`,
-
-  'avantis': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#0d1117"/>
-    <polygon points="14,5 23,20 5,20" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linejoin="round"/>
-    <line x1="14" y1="9" x2="14" y2="17" stroke="#00E5FF" stroke-width="1.5"/>
-  </svg>`,
-
-  'yieldseeker': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#0a1628"/>
-    <circle cx="12" cy="12" r="5" fill="none" stroke="#4ADE80" stroke-width="2"/>
-    <line x1="16" y1="16" x2="22" y2="22" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="12" y1="9" x2="12" y2="15" stroke="#4ADE80" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="9" y1="12" x2="15" y2="12" stroke="#4ADE80" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-
-  'grove-finance': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#0a1a0a"/>
-    <path d="M14 6 L14 16" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/>
-    <path d="M14 10 Q10 7 7 10" stroke="#22C55E" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <path d="M14 13 Q18 10 21 13" stroke="#16A34A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <path d="M10 22 Q14 16 18 22" stroke="#22C55E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  </svg>`,
-
-  'upshift': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#0d0d1a"/>
-    <path d="M14 6 L22 18 H6 Z" fill="#818CF8"/>
-    <rect x="11" y="18" width="6" height="4" rx="1" fill="#818CF8" opacity="0.6"/>
-  </svg>`,
-
-  'veda': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#100a1f"/>
-    <path d="M6 8 L14 20 L22 8" stroke="#A78BFA" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M9 8 L14 16 L19 8" stroke="#7C3AED" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-
-  'concrete': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#111"/>
-    <rect x="6" y="6" width="7" height="7" rx="1" fill="#9CA3AF"/>
-    <rect x="15" y="6" width="7" height="7" rx="1" fill="#6B7280"/>
-    <rect x="6" y="15" width="7" height="7" rx="1" fill="#6B7280"/>
-    <rect x="15" y="15" width="7" height="7" rx="1" fill="#9CA3AF"/>
-  </svg>`,
-
-  'lagoon': `<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-    <rect width="28" height="28" rx="6" fill="#001a2e"/>
-    <path d="M4 18 Q9 12 14 16 Q19 20 24 14" stroke="#38BDF8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-    <path d="M4 22 Q9 16 14 20 Q19 24 24 18" stroke="#0EA5E9" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
-    <circle cx="14" cy="10" r="3" fill="#38BDF8" opacity="0.8"/>
-  </svg>`,
+const LOGO_SLUGS = {
+  'aave-v3':                        'aave-v3',
+  'aave-v2':                        'aave-v2',
+  'compound-v3':                    'compound-v3',
+  'compound-v2':                    'compound-v3',   // v2 has no separate icon
+  'morpho-blue':                    'morpho-blue',
+  'morpho':                         'morpho-blue',
+  'spark':                          'spark',
+  'spark-savings':                  'spark-savings',
+  'sparklend':                      'spark',
+  'fluid':                          'fluid',
+  'fluid-lite':                     'fluid-lite',
+  'fluid-lending':                  'fluid-lending',
+  'euler-v2':                       'euler-v2',
+  'kamino':                         'kamino',
+  'kamino-lend':                    'kamino',
+  'benqi':                          'benqi-lending',
+  'benqi-lending':                  'benqi-lending',
+  'moonwell':                       'moonwell-lending',
+  'moonwell-lending':               'moonwell-lending',
+  'sprinter':                       'sprinter',
+  'lazy':                           'lazy',
+  'lazy-summer-protocol':           'lazy-summer-protocol',
+  'ember-protocol':                 'ember-protocol',
+  'avantis':                        'avantis',
+  'bracket-vaults':                 'bracket-vaults',
+  'yieldseeker':                    'yieldseeker',
+  'goldfinch':                      'goldfinch',
+  'harvest-finance':                'harvest-finance',
+  'dolomite':                       'dolomite',
+  'zerobase-cedefi':                'zerobase-cedefi',
+  'autofinance':                    'autofinance',
+  'loopscale':                      'loopscale',
+  'deltaprime':                     'deltaprime',
+  'extra-finance-leverage-farming': 'extra-finance-leverage-farming',
+  'gains-network':                  'gains-network',
+  'jupiter-lend':                   'jupiter-lend',
+  'beefy':                          'beefy',
+  'maple':                          'maple',
+  'flux-finance':                   'flux-finance',
+  'ample':                          'ample',
+  'folks-finance-xchain':           'folks-finance-xchain',
+  'centrifuge-protocol':            'centrifuge-protocol',
+  'yo-protocol':                    'yo-protocol',
+  'termmax':                        'termmax',
+  'across':                         'across',
+  'yearn-finance':                  'yearn-finance',
+  'fusion-by-ipor':                 'fusion-by-ipor',
+  'spectra-metavaults':             'spectra-metavaults',
+  'save':                           'save',
+  'vesper':                         'vesper',
+  'lista-lending':                  'lista-lending',
+  'credix':                         'credix',
+  'allbridge-classic':              'allbridge-classic',
 };
 
+function logoUrl(slug) {
+  const cdnSlug = LOGO_SLUGS[slug] || slug;
+  return `https://icons.llamao.fi/icons/protocols/${cdnSlug}?w=48&h=48`;
+}
+
 /*
- * Fallback URLs used when pool.url is absent from the API.
- * Priority: pool.url (from DefiLlama API) → this map → null (row not clickable)
+ * Fallback URLs — used when pool.url is absent from the API response.
+ * Priority: pool.url → this map → null (row not clickable)
  */
 const FALLBACK_URLS = {
   'aave-v3': chain => ({
@@ -146,47 +179,78 @@ const FALLBACK_URLS = {
     Base:     'https://app.compound.finance/?market=usdc-basemainnet',
     Polygon:  'https://app.compound.finance/?market=usdc-polygon',
   }[chain] || 'https://app.compound.finance/'),
-  'compound-v2':       () => 'https://app.compound.finance/',
-  'morpho-blue':       () => 'https://app.morpho.org/earn',
-  'morpho':            () => 'https://app.morpho.org/earn',
-  'spark':             () => 'https://app.spark.fi/savings',
-  'sparklend':         () => 'https://app.spark.fi/savings',
+  'compound-v2':                    () => 'https://app.compound.finance/',
+  'morpho-blue':                    () => 'https://app.morpho.org/earn',
+  'morpho':                         () => 'https://app.morpho.org/earn',
+  'spark':                          () => 'https://app.spark.fi/savings',
+  'spark-savings':                  () => 'https://app.spark.fi/savings',
+  'sparklend':                      () => 'https://app.spark.fi/savings',
   'fluid': chain => chain === 'Arbitrum'
     ? 'https://fluid.instadapp.io/lending/arbitrum'
     : 'https://fluid.instadapp.io/lending/mainnet',
-  'euler':             () => 'https://app.euler.finance/',
-  'euler-v2':          () => 'https://app.euler.finance/',
-  'kamino':            () => 'https://app.kamino.finance/lending',
-  'kamino-lend':       () => 'https://app.kamino.finance/lending',
-  'marginfi':          () => 'https://app.marginfi.com/',
-  'drift-protocol':    () => 'https://app.drift.trade/earn',
-  'solend':            () => 'https://solend.fi/dashboard',
+  'fluid-lite':                     () => 'https://fluid.instadapp.io/',
+  'fluid-lending':                  () => 'https://fluid.instadapp.io/',
+  'euler':                          () => 'https://app.euler.finance/',
+  'euler-v2':                       () => 'https://app.euler.finance/',
+  'kamino':                         () => 'https://app.kamino.finance/lending',
+  'kamino-lend':                    () => 'https://app.kamino.finance/lending',
+  'marginfi':                       () => 'https://app.marginfi.com/',
+  'drift-protocol':                 () => 'https://app.drift.trade/earn',
+  'solend':                         () => 'https://solend.fi/dashboard',
   'venus': chain => chain === 'Avalanche'
     ? 'https://app.venus.io/markets?chainId=43114'
     : 'https://app.venus.io/markets',
-  'benqi':             () => 'https://app.benqi.fi/markets',
-  'moonwell': chain => chain === 'Base'
-    ? 'https://moonwell.fi/markets/supply/base/usdc'
-    : 'https://moonwell.fi/markets',
-  'radiant':           () => 'https://app.radiant.capital/',
-  'silo':              () => 'https://app.silo.finance/',
-  'clearpool':         () => 'https://app.clearpool.finance/earn',
-  'exactlyprotocol':   () => 'https://exact.ly/',
-  'seamless-protocol': () => 'https://app.seamlessprotocol.com/',
-  'maple':             () => 'https://app.maple.finance/earn',
-  'sprinter':          () => 'https://app.sprinter.tech/stash',
-  'ember-protocol':    () => 'https://app.emberprotocol.xyz/',
-  'grove-finance':     () => 'https://app.grove.finance/',
-  'yieldseeker':       () => 'https://app.yieldseeker.xyz/',
-  'upshift':           () => 'https://app.upshift.finance/',
-  'veda':              () => 'https://app.veda.tech/',
-  'lagoon':            () => 'https://app.lagoon.finance/',
+  'benqi':                          () => 'https://app.benqi.fi/markets',
+  'benqi-lending':                  () => 'https://app.benqi.fi/markets',
+  'moonwell':                       () => 'https://moonwell.fi/markets',
+  'moonwell-lending':               () => 'https://moonwell.fi/markets',
+  'radiant':                        () => 'https://app.radiant.capital/',
+  'silo':                           () => 'https://app.silo.finance/',
+  'clearpool':                      () => 'https://app.clearpool.finance/earn',
+  'exactlyprotocol':                () => 'https://exact.ly/',
+  'seamless-protocol':              () => 'https://app.seamlessprotocol.com/',
+  'maple':                          () => 'https://app.maple.finance/earn',
+  'sprinter':                       () => 'https://app.sprinter.tech/stash',
+  'lazy':                           () => 'https://lazy.finance/',
+  'lazy-summer-protocol':           () => 'https://app.summer.fi/',
+  'ember-protocol':                 () => 'https://app.emberprotocol.xyz/',
+  'avantis':                        () => 'https://www.avantisfi.com/',
+  'bracket-vaults':                 () => 'https://bracketvaults.com/',
+  'yieldseeker':                    () => 'https://app.yieldseeker.xyz/',
+  'goldfinch':                      () => 'https://app.goldfinch.finance/earn',
+  'harvest-finance':                () => 'https://app.harvest.finance/',
+  'dolomite':                       () => 'https://app.dolomite.io/balances',
+  'zerobase-cedefi':                () => 'https://app.zerobase.fi/',
+  'autofinance':                    () => 'https://autofinance.fi/',
+  'loopscale':                      () => 'https://app.loopscale.com/',
+  'deltaprime':                     () => 'https://app.deltaprime.io/',
+  'extra-finance-leverage-farming': () => 'https://app.extrafi.io/lend',
+  'gains-network':                  () => 'https://gainsnetwork.io/vault/',
+  'jupiter-lend':                   () => 'https://jup.ag/lend',
+  'beefy':                          () => 'https://app.beefy.com/',
+  'flux-finance':                   () => 'https://fluxfinance.com/',
+  'ample':                          () => 'https://ample.finance/',
+  'folks-finance-xchain':           () => 'https://app.folks.finance/lend',
+  'centrifuge-protocol':            () => 'https://app.centrifuge.io/',
+  'yo-protocol':                    () => 'https://yo.xyz/',
+  'termmax':                        () => 'https://termmax.fi/',
+  'across':                         () => 'https://across.to/',
+  'yearn-finance':                  () => 'https://yearn.fi/vaults',
+  'fusion-by-ipor':                 () => 'https://fusion.ipor.io/',
+  'spectra-metavaults':             () => 'https://app.spectra.finance/',
+  'save':                           () => 'https://www.save.finance/',
+  'vesper':                         () => 'https://vesper.finance/',
+  'lista-lending':                  () => 'https://lista.org/lending',
+  'credix':                         () => 'https://app.credix.finance/',
+  'allbridge-classic':              () => 'https://app.allbridge.io/',
+  'grove-finance':                  () => 'https://app.grove.finance/',
+  'upshift':                        () => 'https://app.upshift.finance/',
+  'veda':                           () => 'https://app.veda.tech/',
+  'lagoon':                         () => 'https://app.lagoon.finance/',
 };
 
 function resolveUrl(pool) {
-  /* 1. Use URL the protocol itself registered with DefiLlama */
   if (pool.url && pool.url.startsWith('http')) return pool.url;
-  /* 2. Our curated map */
   const entry = FALLBACK_URLS[pool.project];
   if (!entry) return null;
   return typeof entry === 'function' ? entry(pool.chain) : entry;
@@ -205,9 +269,6 @@ function toMarket(pool) {
     : 0;
 
   const riskObj = window.scoreRisk(pool);
-
-  const logoUrl = `https://icons.llamao.fi/icons/protocols/${pool.project}.png`;
-  const logoSvg = INLINE_LOGOS[pool.project] || null;
   const url     = resolveUrl(pool);
 
   return {
@@ -225,8 +286,7 @@ function toMarket(pool) {
     sigma:      pool.sigma,
     count:      pool.count,
     prediction: pool.predictions?.predictedClass || null,
-    logoUrl,
-    logoSvg,   // inline SVG string or null
+    logoUrl:    logoUrl(pool.project),
     url,
   };
 }
