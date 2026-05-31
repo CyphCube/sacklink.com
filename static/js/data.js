@@ -183,6 +183,71 @@ function logoUrl(slug) {
  * Fallback URLs — used when pool.url is absent from the API response.
  * Priority: pool.url → this map → null (row not clickable)
  */
+/* Specific per-market URLs (slug|Chain|TOKEN) — highest priority */
+const MARKET_URLS = {
+  'spark-savings|Ethereum|USDC':        'https://app.spark.fi/savings/mainnet/spusdc',
+  'spark-savings|Ethereum|USDT':        'https://app.spark.fi/savings/mainnet/spusdt',
+  'spark-savings|Avalanche|USDC':       'https://app.spark.fi/savings/avalanche/spusdc',
+  'aave-v4|Ethereum|USDT':              'https://pro.aave.com/explore/asset/1/0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  'kamino|Solana|USDC':                 'https://kamino.com/borrow',
+  'kamino|Solana|USDT':                 'https://kamino.com/borrow',
+  'kamino-lend|Solana|USDC':            'https://kamino.com/borrow',
+  'kamino-lend|Solana|USDT':            'https://kamino.com/borrow',
+  'loopscale|Solana|USDC':              'https://app.loopscale.com/vault/7PeYxZpM2dpc4RRDQovexMJ6tkSVLWtRN4mbNywsU3e6',
+  'fluid-lending|Ethereum|USDC':        'https://fluid.io/lending/1',
+  'fluid-lending|Ethereum|USDT':        'https://fluid.io/lending/1',
+  'fluid-lending|Arbitrum|USDC':        'https://fluid.io/lending/42161',
+  'fluid-lending|Base|USDC':            'https://fluid.io/lending/8453',
+  'fluid-lite|Ethereum|USDC':           'https://fluid.io/lite/8453',
+  'compound-v3|Ethereum|USDC':          'https://app.compound.finance/?market=usdc-mainnet',
+  'compound-v3|Ethereum|USDT':          'https://app.compound.finance/?market=usdt-mainnet',
+  'compound-v3|Arbitrum|USDC':          'https://app.compound.finance/?market=usdc-arb',
+  'compound-v3|Arbitrum|USDT':          'https://app.compound.finance/?market=usd%E2%82%AE0-arb',
+  'yearn-finance|Ethereum|USDC':        'https://yearn.fi/vaults?chains=1',
+  'yearn-finance|Ethereum|USDT':        'https://yearn.fi/vaults?chains=1',
+  'yearn-finance|Base|USDC':            'https://yearn.fi/vaults?chains=8453',
+  'ember-protocol|Ethereum|USDC':       'https://ember.so/earn/pALPHA',
+  'yo-protocol|Ethereum|USDC':          'https://app.yo.xyz/vault/base/yousd',
+  'yo-protocol|Base|USDC':              'https://app.yo.xyz/vault/base/yousd',
+  'avantis|Base|USDC':                  'https://www.avantisfi.com/earn',
+  'zerobase-cedefi|Ethereum|USDT':      'https://app.zerobase.pro/en',
+  'zerobase-cedefi|Arbitrum|USDT':      'https://app.zerobase.pro/en',
+  'euler-v2|Ethereum|USDC':             'https://app.euler.finance/lend/0xAB2726DAf820Aa9270D14Db9B18c8d187cbF2f30?network=1',
+  'lazy-summer-protocol|Ethereum|USDC': 'https://summer.fi/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17',
+  'lazy-summer-protocol|Base|USDC':     'https://summer.fi/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17',
+  'lazy|Ethereum|USDC':                 'https://getlazy.xyz/',
+  'autofinance|Ethereum|USDC':          'https://app.auto.finance/pools/autoUSD',
+  'autofinance|Base|USDC':              'https://app.auto.finance/pools/baseUSD',
+  'termmax|Ethereum|USDC':              'https://app.termmax.ts.finance/earn/eth/0xf488ccdf04079cc03183cdb6a147d12cf97f9317?chain=eth',
+  'termmax|Base|USDC':                  'https://app.termmax.ts.finance/earn/base/0xd42c1bf2aca1dd771795453277cc14f6c3b2c388?chain=base',
+  'spectra-metavaults|Base|USDC':       'https://app.spectra.finance/metavaults/base:0x5e93e1193a5e297cba0856e9b3f22b6e05429b9a',
+  'gains-network|Arbitrum|USDC':        'https://gains.trade/vaults/gUSDC',
+  'gains-network|Base|USDC':            'https://gains.trade/vaults/gUSDC',
+  'ample|Base|USDC':                    'https://ample.money/deposit',
+  'sprinter|Base|USDC':                 'https://app.sprinter.tech/stash',
+  'bracket-vaults|Ethereum|USDC':       'https://www.bracket.fi/',
+  'beefy|Ethereum|USDC':                'https://app.beefy.com/vault/morpho-smokehouse-usdc',
+  'beefy|Base|USDC':                    'https://app.beefy.com/vault/morpho-base-steakhouse-high-yield-usdc',
+  'flux-finance|Ethereum|USDC':         'https://fluxfinance.com/lend',
+  'flux-finance|Ethereum|USDT':         'https://fluxfinance.com/lend',
+  'harvest-finance|Ethereum|USDC':      'https://app.harvest.finance/ethereum/0xf0358e8c3CD5Fa238a29301d0bEa3D63A17bEdBE',
+  'harvest-finance|Base|USDC':          'https://app.harvest.finance/base/0xC777031D50F632083Be7080e51E390709062263E',
+  'benqi-lending|Avalanche|USDC':       'https://app.benqi.fi/lending/core/usdc',
+  'benqi-lending|Avalanche|USDT':       'https://app.benqi.fi/lending/core/usdt',
+  'benqi|Avalanche|USDC':               'https://app.benqi.fi/lending/core/usdc',
+  'benqi|Avalanche|USDT':               'https://app.benqi.fi/lending/core/usdt',
+  'across|Ethereum|USDC':               'https://across.to/pool',
+  'across|Ethereum|USDT':               'https://across.to/pool',
+  'fusion-by-ipor|Ethereum|USDC':       'https://app.ipor.io/fusion/ethereum/0xb0f56bb0bf13ee05fef8cd2d8df5ffdfcac7a74f',
+  'moonwell-lending|Base|USDC':         'https://moonwell.fi/markets/supply/base/usdc',
+  'moonwell|Base|USDC':                 'https://moonwell.fi/markets/supply/base/usdc',
+  'deltaprime|Avalanche|USDC':          'https://app.deltaprime.io/#/pools',
+  'folks-finance-xchain|Polygon|USDT':  'https://xapp.folks.finance/',
+  'lista-lending|Ethereum|USDC':        'https://lista.org/lending/vault/ethereum/0x9651ae50a5763c6f9b883f9d50e8116281cfcab2?tab=vault',
+  'lista-lending|Ethereum|USDT':        'https://lista.org/lending/vault/ethereum/0x28643ffd79256719d6acbcf25cb44576caebcf12?tab=vault',
+  'vesper|Ethereum|USDC':               'https://app.vesper.finance/eth/pools/0xa8b607Aa09B6A2E306F93e74c282Fb13f6A80452',
+};
+
 const FALLBACK_URLS = {
   'aave-v3': chain => ({
     Ethereum:  'https://app.aave.com/markets/?marketName=proto_mainnet_v3',
@@ -269,7 +334,13 @@ const FALLBACK_URLS = {
 };
 
 function resolveUrl(pool) {
+  const token = pool.symbol.toUpperCase().includes('USDC') ? 'USDC' : 'USDT';
+  /* 1. Specific per-market URL (highest priority) */
+  const mkey = `${pool.project}|${pool.chain}|${token}`;
+  if (MARKET_URLS[mkey]) return MARKET_URLS[mkey];
+  /* 2. URL the protocol registered with DefiLlama */
   if (pool.url && pool.url.startsWith('http')) return pool.url;
+  /* 3. Generic protocol fallback */
   const entry = FALLBACK_URLS[pool.project];
   if (!entry) return null;
   return typeof entry === 'function' ? entry(pool.chain) : entry;
