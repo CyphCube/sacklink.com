@@ -52,6 +52,7 @@
   function getSorted(rows) {
     return [...rows].sort((a, b) => {
       let diff = 0;
+      if (sortKey === 'protocol') diff = a.protocol.localeCompare(b.protocol);
       if (sortKey === 'apy')  diff = b.apy - a.apy;
       if (sortKey === 'tvl')  diff = b.tvl - a.tvl;
       if (sortKey === '7d')   diff = b.trend - a.trend;
@@ -102,9 +103,11 @@
         ? `class="market-row clickable" data-href="${escHtml(r.url)}"`
         : `class="market-row"`;
 
-      /* Protocol logo — CDN img with lettered fallback on error */
+      /* Protocol logo: use <img> with inline SVG fallback on error */
       const fallbackLetter = escHtml(r.protocol[0].toUpperCase());
-      const logoHtml = `<img
+      const logoHtml = r.logoSvg
+        ? `<span class="protocol-logo-svg">${r.logoSvg}</span>`
+        : `<img
             class="protocol-logo"
             src="${escHtml(r.logoUrl)}"
             alt="${escHtml(r.protocol)}"
