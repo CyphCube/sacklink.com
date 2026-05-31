@@ -7,7 +7,8 @@ window.CHAIN_META = {
   Polygon:   { slug: 'polygon',   color: '#8247E5' },
   Avalanche: { slug: 'avalanche', color: '#E84142' },
   Solana:    { slug: 'solana',    color: '#9945FF' },
-  Optimism:  { slug: 'optimism',  color: '#FF0420' },
+  BSC:       { slug: 'bsc',       color: '#F0B90B' },
+  Sui:       { slug: 'sui',       color: '#6FBCF0' },
 };
 
 window.chainLogo = function(chain, size) {

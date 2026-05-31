@@ -8,12 +8,32 @@ window.CHAIN_STYLES = {
   Polygon:   { color: '#8247E5' },
   Avalanche: { color: '#E84142' },
   Solana:    { color: '#9945FF' },
-  Optimism:  { color: '#FF0420' },
+  BSC:       { color: '#F0B90B' },
+  Sui:       { color: '#6FBCF0' },
 };
 
 const ALLOWED_CHAINS = new Set([
   'Ethereum', 'Arbitrum', 'Base', 'Polygon',
-  'Avalanche', 'Solana', 'Optimism'
+  'Avalanche', 'Solana', 'BSC', 'Sui'
+]);
+
+/* Excluded markets */
+const EXCLUDED_MARKETS = new Set([
+  'euler-v2|Avalanche|USDC',
+  'credix|Ethereum|USDC',   'credix|Ethereum|USDT',
+  'credix|Arbitrum|USDC',   'credix|Arbitrum|USDT',
+  'credix|Polygon|USDC',    'credix|Polygon|USDT',
+  'credix|Solana|USDC',     'credix|Solana|USDT',
+  'credix|Base|USDC',       'credix|Base|USDT',
+  'credix|BSC|USDC',        'credix|BSC|USDT',
+  'credix|Sui|USDC',        'credix|Sui|USDT',
+  'allbridge-classic|Ethereum|USDC', 'allbridge-classic|Ethereum|USDT',
+  'allbridge-classic|Arbitrum|USDC', 'allbridge-classic|Arbitrum|USDT',
+  'allbridge-classic|Polygon|USDC',  'allbridge-classic|Polygon|USDT',
+  'allbridge-classic|Solana|USDC',   'allbridge-classic|Solana|USDT',
+  'allbridge-classic|Base|USDC',     'allbridge-classic|Base|USDT',
+  'allbridge-classic|BSC|USDC',      'allbridge-classic|BSC|USDT',
+  'allbridge-classic|Sui|USDC',      'allbridge-classic|Sui|USDT',
 ]);
 
 /* Display names */
@@ -170,7 +190,6 @@ const FALLBACK_URLS = {
     Base:      'https://app.aave.com/markets/?marketName=proto_base_v3',
     Polygon:   'https://app.aave.com/markets/?marketName=proto_polygon_v3',
     Avalanche: 'https://app.aave.com/markets/?marketName=proto_avalanche_v3',
-    Optimism:  'https://app.aave.com/markets/?marketName=proto_optimism_v3',
   }[chain] || 'https://app.aave.com/markets/'),
   'aave-v2':           () => 'https://app.aave.com/markets/?marketName=proto_mainnet',
   'compound-v3': chain => ({
@@ -306,6 +325,9 @@ window.fetchMarkets = async function () {
     if (sym !== 'USDC' && sym !== 'USDT')  return false;
     if ((p.apy || 0) <= 0)                 return false;
     if ((p.tvlUsd || 0) < 1_000_000)      return false;
+    if (p.project === 'centrifuge-protocol') return false;
+    const _tok = p.symbol.toUpperCase().includes('USDC') ? 'USDC' : 'USDT';
+    if (EXCLUDED_MARKETS.has(`${p.project}|${p.chain}|${_tok}`)) return false;
     return true;
   });
 
