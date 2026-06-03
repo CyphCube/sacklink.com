@@ -352,7 +352,7 @@ function resolveUrl(pool) {
 
 function toMarket(pool) {
   const apy  = parseFloat((pool.apy || 0).toFixed(2));
-  const tvlM = Math.round((pool.tvlUsd || 0) / 1e6);
+  const tvlM = parseFloat(((pool.tvlUsd || 0) / 1e6).toFixed(4));
 
   const util = pool.utilization != null
     ? Math.min(Math.round(pool.utilization * 100), 99)

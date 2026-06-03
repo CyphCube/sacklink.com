@@ -13,7 +13,7 @@
   /* ── Helpers ── */
   function fmtTVL(m) {
     if (m >= 1000) return '$' + (m / 1000).toFixed(2) + 'B';
-    if (m >= 1)    return '$' + Math.round(m) + 'M';
+    if (m >= 1)    return '$' + m.toFixed(2) + 'M';
     return '<$1M';
   }
 
