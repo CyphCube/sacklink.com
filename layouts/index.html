@@ -5,7 +5,9 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="logo-block">
-        <span class="logo">yield<span class="logo-dim">.fi</span></span>
+        <a href="{{ "/" | relURL }}" class="logo-link">
+          <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="site-logo" />
+        </a>
         <span class="tagline">{{ .Site.Params.description }}</span>
       </div>
       <div class="live-indicator">

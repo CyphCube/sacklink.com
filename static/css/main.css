@@ -87,17 +87,16 @@ body {
   gap: 2px;
 }
 
-.logo {
-  font-family: var(--font-mono);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
-.logo-dim {
-  color: var(--text-dim);
-  font-weight: 400;
+.site-logo {
+  height: 40px;
+  width: auto;
+  display: block;
 }
 
 .tagline {
