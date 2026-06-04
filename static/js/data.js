@@ -106,6 +106,10 @@ const PROTOCOL_NAMES = {
   'veda':                           'Veda',
   'concrete':                       'Concrete',
   'lagoon':                         'Lagoon',
+  'bitway':                         'Bitway Earn',
+  'bitway-earn':                    'Bitway Earn',
+  'venus-core-pool':                'Venus Core Pool',
+  'venus-flux':                     'Venus Flux',
 };
 
 function protocolName(slug) {
@@ -250,6 +254,23 @@ const MARKET_URLS = {
   'lista-lending|Ethereum|USDC':        'https://lista.org/lending/vault/ethereum/0x9651ae50a5763c6f9b883f9d50e8116281cfcab2?tab=vault',
   'lista-lending|Ethereum|USDT':        'https://lista.org/lending/vault/ethereum/0x28643ffd79256719d6acbcf25cb44576caebcf12?tab=vault',
   'vesper|Ethereum|USDC':               'https://app.vesper.finance/eth/pools/0xa8b607Aa09B6A2E306F93e74c282Fb13f6A80452',
+  'bitway|BSC|USDT':                    'https://app.bitway.com/explore',
+  'bitway|BSC|USDC':                    'https://app.bitway.com/explore',
+  'bitway-earn|BSC|USDT':               'https://app.bitway.com/explore',
+  'bitway-earn|BSC|USDC':               'https://app.bitway.com/explore',
+  'aave-v3|BSC|USDT':                   'https://app.aave.com/reserve-overview/?underlyingAsset=0x55d398326f99059ff775485246999027b3197955&marketName=proto_bnb_v3',
+  'aave-v3|BSC|USDC':                   'https://app.aave.com/reserve-overview/?underlyingAsset=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&marketName=proto_bnb_v3',
+  'lista-lending|BSC|USDT':             'https://lista.org/lending/vault/bsc/0x6d6783c146f2b0b2774c1725297f1845dc502525?tab=vault',
+  'termmax|BSC|USDC':                   'https://app.termmax.ts.finance/earn/bnb/0xb5a2224bc5a4f42f319242ac089cdce97ff8a004?chain=bnb',
+  'termmax|BSC|USDT':                   'https://app.termmax.ts.finance/earn/bnb/0xb5a2224bc5a4f42f319242ac089cdce97ff8a004?chain=bnb',
+  'venus-core-pool|BSC|USDC':           'https://venus.io/markets#/markets/0xfD36E2c2a6789Db23113685031d7F16329158384/0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8?chainId=56&tab=supply',
+  'venus-core-pool|BSC|USDT':           'https://venus.io/markets#/markets/0xfD36E2c2a6789Db23113685031d7F16329158384/0xfD5840Cd36d94D7229439859C0112a4185BC0255?chainId=56&tab=supply',
+  'venus|BSC|USDC':                     'https://venus.io/markets#/markets/0xfD36E2c2a6789Db23113685031d7F16329158384/0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8?chainId=56&tab=supply',
+  'venus|BSC|USDT':                     'https://venus.io/markets#/markets/0xfD36E2c2a6789Db23113685031d7F16329158384/0xfD5840Cd36d94D7229439859C0112a4185BC0255?chainId=56&tab=supply',
+  'venus-flux|BSC|USDC':                'https://flux.venus.io/lending/56/USDC',
+  'venus-flux|BSC|USDT':                'https://flux.venus.io/lending/56/USDT',
+  'zerobase-cedefi|BSC|USDC':           'https://app.zerobase.pro/en',
+  'zerobase-cedefi|BSC|USDT':           'https://app.zerobase.pro/en',
 };
 
 const FALLBACK_URLS = {
@@ -335,6 +356,8 @@ const FALLBACK_URLS = {
   'upshift':                        () => 'https://app.upshift.finance/',
   'veda':                           () => 'https://app.veda.tech/',
   'lagoon':                         () => 'https://app.lagoon.finance/',
+  'bitway':                         () => 'https://app.bitway.com/explore',
+  'bitway-earn':                    () => 'https://app.bitway.com/explore',
 };
 
 function resolveUrl(pool) {
