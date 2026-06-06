@@ -108,6 +108,12 @@ const PROTOCOL_NAMES = {
   'lagoon':                         'Lagoon',
   'bitway':                         'Bitway Earn',
   'bitway-earn':                    'Bitway Earn',
+  'current':                        'Current',
+  'navi-protocol':                  'Navi Lending',
+  'navi':                           'Navi Lending',
+  'navi-lending':                   'Navi Lending',
+  'kai-finance':                    'Kai Finance',
+  'kai':                            'Kai Finance',
   'venus-core-pool':                'Venus Core Pool',
   'venus-flux':                     'Venus Flux',
 };
@@ -271,6 +277,18 @@ const MARKET_URLS = {
   'venus-flux|BSC|USDT':                'https://flux.venus.io/lending/56/USDT',
   'zerobase-cedefi|BSC|USDC':           'https://app.zerobase.pro/en',
   'zerobase-cedefi|BSC|USDT':           'https://app.zerobase.pro/en',
+  'current|Sui|USDC':                   'https://app.current.finance/market/fe1d8929d13b00aaecd7642dec1c6d41cab82882a1b139efa46bf61dfd6380bf::market_type::MainMarket/dba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC',
+  'ember-protocol|Sui|USDC':            'https://ember.so/earn/eTHIRD',
+  'navi-protocol|Sui|USDC':             'https://app.naviprotocol.io/',
+  'navi-protocol|Sui|USDT':             'https://app.naviprotocol.io/',
+  'navi|Sui|USDC':                      'https://app.naviprotocol.io/',
+  'navi|Sui|USDT':                      'https://app.naviprotocol.io/',
+  'navi-lending|Sui|USDC':              'https://app.naviprotocol.io/',
+  'navi-lending|Sui|USDT':              'https://app.naviprotocol.io/',
+  'kai-finance|Sui|USDC':               'https://kai.finance/vaults/USDC',
+  'kai-finance|Sui|USDT':               'https://kai.finance/vaults/suiUSDT',
+  'kai|Sui|USDC':                       'https://kai.finance/vaults/USDC',
+  'kai|Sui|USDT':                       'https://kai.finance/vaults/suiUSDT',
 };
 
 const FALLBACK_URLS = {
@@ -358,6 +376,12 @@ const FALLBACK_URLS = {
   'lagoon':                         () => 'https://app.lagoon.finance/',
   'bitway':                         () => 'https://app.bitway.com/explore',
   'bitway-earn':                    () => 'https://app.bitway.com/explore',
+  'current':                        () => 'https://app.current.finance/',
+  'navi-protocol':                  () => 'https://app.naviprotocol.io/',
+  'navi':                           () => 'https://app.naviprotocol.io/',
+  'navi-lending':                   () => 'https://app.naviprotocol.io/',
+  'kai-finance':                    () => 'https://kai.finance/vaults',
+  'kai':                            () => 'https://kai.finance/vaults',
 };
 
 function resolveUrl(pool) {

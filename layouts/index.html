@@ -8,8 +8,13 @@
         <a href="{{ "/" | relURL }}" class="logo-link">
           <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="site-logo" />
         </a>
-        <span class="tagline">{{ .Site.Params.description }}</span>
       </div>
+      <nav class="main-nav">
+        <a class="nav-item active" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="nav-item" href="#">Cryptocurrencies</a>
+        <a class="nav-item" href="#">RWA</a>
+        <a class="nav-item" href="#">Wallets</a>
+      </nav>
       <div class="live-indicator">
         <span class="live-dot" aria-hidden="true"></span>
         <span class="live-label">Live rates</span>
