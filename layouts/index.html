@@ -19,7 +19,18 @@
         <span class="live-dot" aria-hidden="true"></span>
         <span class="live-label">Live rates</span>
       </div>
+      <!-- Hamburger (mobile only) -->
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+    <!-- Mobile nav drawer -->
+    <nav class="mobile-nav" id="mobile-nav">
+      <a class="nav-item active" href="{{ "/" | relURL }}">Stablecoins</a>
+      <a class="nav-item" href="#">Cryptocurrencies</a>
+      <a class="nav-item" href="#">RWA</a>
+      <a class="nav-item" href="#">Wallets</a>
+    </nav>
   </header>
 
   <!-- Metrics Bar -->
@@ -132,4 +143,15 @@
   </main>
 
 </div>
+  <script>
+    (function(){
+      var btn = document.getElementById('hamburger');
+      var nav = document.getElementById('mobile-nav');
+      if(!btn||!nav) return;
+      btn.addEventListener('click', function(){
+        var open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+    })();
+  </script>
 {{ end }}

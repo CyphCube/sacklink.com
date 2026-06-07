@@ -557,6 +557,9 @@ tbody tr.market-row {
 }
 
 
+/* ── Hamburger (hidden on desktop) ── */
+.hamburger { display: none; }
+
 /* ── Main nav ── */
 .main-nav {
   display: flex;
@@ -649,23 +652,156 @@ tbody tr.market-row {
   display: block;
   object-fit: cover;
 }
+/* ── Tablet (≤1050px) ── */
 @media (max-width: 1050px) {
-  .chain-filter .filter-btn[data-chain="Avalanche"],
-  .chain-filter .filter-btn[data-chain="Optimism"] { display: none; }
+  .main-nav { gap: 2px; }
+  .nav-item { padding: 6px 10px; font-size: 11px; }
 }
 
+/* ── Tablet (≤900px) ── */
 @media (max-width: 900px) {
-  .col-7d { display: none; }
-  .chain-filter .filter-btn[data-chain="Polygon"],
-  .chain-filter .filter-btn[data-chain="Solana"] { display: none; }
   .chain-name { display: none; }
+  .main-nav { gap: 0; }
+  .nav-item { padding: 5px 8px; font-size: 11px; }
 }
 
+/* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
-  #app { padding: 0 1rem 3rem; }
-  .col-chain { display: none; }
-  .logo { font-size: 18px; }
-  .metric-value { font-size: 18px; }
-  .filter-row { gap: 6px; }
-  .filter-btn { padding: 5px 9px; font-size: 10px; }
+  #app { padding: 0 0.75rem 3rem; }
+
+  /* ── Header: logo left, hamburger right ── */
+  .header-inner {
+    flex-wrap: nowrap;
+    align-items: center;
+    position: relative;
+  }
+  .site-logo { height: 34px; }
+
+  /* Hide desktop nav, show hamburger */
+  .main-nav { display: none; }
+  .live-indicator { display: none; }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  /* Mobile nav drawer */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px;
+    margin-top: 8px;
+    gap: 2px;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav .nav-item {
+    display: block;
+    padding: 10px 14px;
+    font-size: 13px;
+    border-radius: var(--radius-sm);
+    width: 100%;
+  }
+
+  /* ── Metrics ── */
+  .metrics-bar { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-card { padding: 10px 12px; }
+  .metric-value { font-size: 16px; }
+  .metric-label { font-size: 9px; }
+
+  /* ── Controls ── */
+  .filter-row { gap: 5px; flex-wrap: wrap; }
+  .filter-group { flex-shrink: 0; }
+  .filter-btn { padding: 5px 8px; font-size: 10px; }
+  .spacer { display: none; }
+  .sort-select { width: 100%; font-size: 11px; }
+  .chain-filter {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .chain-filter::-webkit-scrollbar { display: none; }
+  .chain-filter .filter-btn { flex-shrink: 0; }
+
+  /* ── Table: horizontal scroll, show ALL columns ── */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    table-layout: auto;
+    min-width: 700px;
+  }
+  .col-protocol, .col-chain, .col-token,
+  .col-apy, .col-tvl, .col-7d, .col-risk { width: auto; }
+
+  tbody td { padding: 10px 10px; white-space: nowrap; }
+  thead th { padding: 8px 10px; font-size: 9px; white-space: nowrap; }
+
+  .protocol-name { font-size: 12px; }
+  .protocol-sub  { font-size: 10px; }
+  .apy  { font-size: 13px; }
+  .tvl-val { font-size: 12px; }
+  .chain-name { display: none; }
+
+  .protocol-logo { width: 22px; height: 22px; }
+  .protocol-logo-wrap { width: 22px; height: 22px; }
+  .protocol-cell { gap: 7px; }
+
+  /* ── Footer ── */
+  .table-footer { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
+
+/* ── Sticky "All" in chain filter on mobile ── */
+@media (max-width: 640px) {
+  .filter-row { position: relative; }
+  .chain-filter { display: flex; }
+  .chain-filter .filter-btn[data-chain="all"] {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--bg);
+    border-right: 1px solid var(--border-md);
+    flex-shrink: 0;
+  }
+  .chain-filter .filter-btn[data-chain="all"].active {
+    background: var(--bg-elevated);
+  }
+
+  /* 2. Sticky protocol column in table */
+  .table-wrap { position: relative; }
+  table { border-collapse: separate; border-spacing: 0; }
+  tbody td:first-child,
+  thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg);
+  }
+  thead th:first-child { background: var(--bg-surface); }
+  tbody tr:hover td:first-child { background: var(--bg-hover); }
+  /* Keep border visible on sticky column */
+  thead th:first-child { border-right: 1px solid var(--border); }
+  tbody td:first-child  { border-right: 1px solid var(--border); }
+}
+
