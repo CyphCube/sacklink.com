@@ -106,6 +106,15 @@ const PROTOCOL_NAMES = {
   'veda':                           'Veda',
   'concrete':                       'Concrete',
   'lagoon':                         'Lagoon',
+  'accountable':                    'Accountable',
+  'symbiosis':                      'Symbiosis',
+  'gami-labs':                      'Gami Labs',
+  'gami':                           'Gami Labs',
+  'silo-v2':                        'Silo V2',
+  'project-0':                      'Project 0',
+  'project0':                       'Project 0',
+  'scallop-lend':                   'Scallop Lend',
+  'scallop':                        'Scallop Lend',
   'bitway':                         'Bitway Earn',
   'bitway-earn':                    'Bitway Earn',
   'current':                        'Current',
@@ -260,6 +269,16 @@ const MARKET_URLS = {
   'lista-lending|Ethereum|USDC':        'https://lista.org/lending/vault/ethereum/0x9651ae50a5763c6f9b883f9d50e8116281cfcab2?tab=vault',
   'lista-lending|Ethereum|USDT':        'https://lista.org/lending/vault/ethereum/0x28643ffd79256719d6acbcf25cb44576caebcf12?tab=vault',
   'vesper|Ethereum|USDC':               'https://app.vesper.finance/eth/pools/0xa8b607Aa09B6A2E306F93e74c282Fb13f6A80452',
+  'aave-v4|Ethereum|USDC':              'https://pro.aave.com/',
+  'accountable|Ethereum|USDC':          'https://yield.accountable.capital/',
+  'symbiosis|Ethereum|USDC':            'https://app.symbiosis.finance/farm',
+  'gami-labs|Avalanche|USDC':           'https://app.gamilabs.io/',
+  'gami|Avalanche|USDC':                'https://app.gamilabs.io/',
+  'silo-v2|Avalanche|USDC':             'https://app.silo.finance/markets/avalanche',
+  'project-0|Solana|USDC':              'https://app.0.xyz/',
+  'project0|Solana|USDC':               'https://app.0.xyz/',
+  'scallop-lend|Sui|USDC':              'https://app.scallop.io/',
+  'scallop|Sui|USDC':                   'https://app.scallop.io/',
   'bitway|BSC|USDT':                    'https://app.bitway.com/explore',
   'bitway|BSC|USDC':                    'https://app.bitway.com/explore',
   'bitway-earn|BSC|USDT':               'https://app.bitway.com/explore',
@@ -376,6 +395,15 @@ const FALLBACK_URLS = {
   'lagoon':                         () => 'https://app.lagoon.finance/',
   'bitway':                         () => 'https://app.bitway.com/explore',
   'bitway-earn':                    () => 'https://app.bitway.com/explore',
+  'accountable':                    () => 'https://yield.accountable.capital/',
+  'symbiosis':                      () => 'https://app.symbiosis.finance/farm',
+  'gami-labs':                      () => 'https://app.gamilabs.io/',
+  'gami':                           () => 'https://app.gamilabs.io/',
+  'silo-v2':                        () => 'https://app.silo.finance/',
+  'project-0':                      () => 'https://app.0.xyz/',
+  'project0':                       () => 'https://app.0.xyz/',
+  'scallop-lend':                   () => 'https://app.scallop.io/',
+  'scallop':                        () => 'https://app.scallop.io/',
   'current':                        () => 'https://app.current.finance/',
   'navi-protocol':                  () => 'https://app.naviprotocol.io/',
   'navi':                           () => 'https://app.naviprotocol.io/',
@@ -384,17 +412,45 @@ const FALLBACK_URLS = {
   'kai':                            () => 'https://kai.finance/vaults',
 };
 
+
+/* ── GitHub adapter URL fetcher ──────────────────────────────────────────
+   For protocols where pool.url is absent and FALLBACK_URLS has no entry,
+   we fetch the adapter's index.js from DefiLlama's yield-server GitHub repo
+   and extract the module-level `url:` field — the same URL DefiLlama uses.
+   Results are cached in memory for the session so we only fetch once.
+*/
+const _adapterUrlCache = {};
+
+async function fetchAdapterUrl(slug) {
+  if (_adapterUrlCache[slug] !== undefined) return _adapterUrlCache[slug];
+  try {
+    const raw = `https://raw.githubusercontent.com/DefiLlama/yield-server/master/src/adaptors/${slug}/index.js`;
+    const res = await fetch(raw);
+    if (!res.ok) { _adapterUrlCache[slug] = null; return null; }
+    const text = await res.text();
+    // Match: url: 'https://...' or url: "https://..."
+    const match = text.match(/url:\s*['"]( *https?:\/\/[^'"]+)['"]/m);
+    const url = match ? match[1].trim() : null;
+    _adapterUrlCache[slug] = url;
+    return url;
+  } catch {
+    _adapterUrlCache[slug] = null;
+    return null;
+  }
+}
+
 function resolveUrl(pool) {
   const token = pool.symbol.toUpperCase().includes('USDC') ? 'USDC' : 'USDT';
   /* 1. Specific per-market URL (highest priority) */
   const mkey = `${pool.project}|${pool.chain}|${token}`;
   if (MARKET_URLS[mkey]) return MARKET_URLS[mkey];
-  /* 2. URL the protocol registered with DefiLlama */
+  /* 2. URL the protocol registered with DefiLlama API */
   if (pool.url && pool.url.startsWith('http')) return pool.url;
   /* 3. Generic protocol fallback */
   const entry = FALLBACK_URLS[pool.project];
-  if (!entry) return null;
-  return typeof entry === 'function' ? entry(pool.chain) : entry;
+  if (entry) return typeof entry === 'function' ? entry(pool.chain) : entry;
+  /* 4. Return slug for async GitHub fetch (resolved in toMarket) */
+  return null;
 }
 
 function toMarket(pool) {
@@ -464,6 +520,18 @@ window.fetchMarkets = async function () {
   window.MARKETS = Array.from(seen.values())
     .map(toMarket)
     .sort((a, b) => b.apy - a.apy);
+
+  /* Async-patch missing URLs from GitHub adapter files */
+  const missing = window.MARKETS.filter(m => !m.url);
+  if (missing.length) {
+    const slugs = [...new Set(missing.map(m => m.slug))];
+    await Promise.all(slugs.map(async slug => {
+      const url = await fetchAdapterUrl(slug);
+      if (url) {
+        window.MARKETS.forEach(m => { if (m.slug === slug && !m.url) m.url = url; });
+      }
+    }));
+  }
 
   return window.MARKETS;
 };
