@@ -50,14 +50,38 @@
     catch(e) {}
   }
 
+  const INITIALIZED_KEY = 'sacklink_initialized';
+  const SEEN_VERSION     = 'v2';
+
+  /* Reset if this is a new version (clears bad first-run data) */
+  (function resetIfNeeded() {
+    try {
+      if (localStorage.getItem(INITIALIZED_KEY) !== SEEN_VERSION) {
+        localStorage.removeItem(SEEN_KEY);
+        localStorage.removeItem(INITIALIZED_KEY);
+      }
+    } catch(e) {}
+  })();
+
   function updateSeen(markets) {
     const seen = loadSeen();
     const now  = Date.now();
+    const isFirstRun = !localStorage.getItem(INITIALIZED_KEY);
+
     markets.forEach(r => {
       const key = r.slug + '|' + r.chain + '|' + r.token;
-      if (!seen[key]) seen[key] = now;
+      if (!seen[key]) {
+        /* On first run, backdate to before the NEW_BADGE_DAYS window
+           so existing protocols never show the badge */
+        seen[key] = isFirstRun
+          ? now - (NEW_BADGE_DAYS + 1) * 86400 * 1000
+          : now;
+      }
     });
-    // Prune entries older than 30 days to keep storage clean
+
+    if (isFirstRun) localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
+
+    // Prune entries older than 30 days
     Object.keys(seen).forEach(k => {
       if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
     });
@@ -70,6 +94,10 @@
     const first = seen[key];
     if (!first) return false;
     return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
+  }
+
+  function chainDisplayName(chain) {
+    return chain === 'BSC' ? 'BNB Chain' : chain;
   }
 
   function escHtml(s) {
@@ -166,14 +194,14 @@
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
                 ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
               </div>
-              <div class="protocol-sub">${escHtml(r.chain.toLowerCase())}</div>
+              <div class="protocol-sub">${escHtml(chainDisplayName(r.chain).toLowerCase())}</div>
             </div>
           </div>
         </td>
         <td>
           <div class="chain-cell">
             ${window.chainLogo(r.chain, 20)}
-            <span class="chain-name">${escHtml(r.chain)}</span>
+            <span class="chain-name">${escHtml(chainDisplayName(r.chain))}</span>
           </div>
         </td>
         <td>
