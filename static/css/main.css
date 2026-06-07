@@ -557,8 +557,9 @@ tbody tr.market-row {
 }
 
 
-/* ── Hamburger (hidden on desktop) ── */
+/* ── Hamburger + mobile nav (hidden on desktop) ── */
 .hamburger { display: none; }
+.mobile-nav { display: none; }
 
 /* ── Main nav ── */
 .main-nav {

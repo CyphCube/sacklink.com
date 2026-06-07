@@ -184,9 +184,6 @@
   async function refreshData() {
     try {
       await window.fetchMarkets();
-      /* DEBUG: log protocols with no link */
-      const _noUrl = (window.MARKETS||[]).filter(m=>!m.url).map(m=>m.slug+'|'+m.chain+'|'+m.token+'|'+m.protocol);
-      if(_noUrl.length) console.log('NO LINK:\n'+_noUrl.join('\n'));
       renderTable();
     } catch (err) {
       console.error('DefiLlama fetch failed:', err);
