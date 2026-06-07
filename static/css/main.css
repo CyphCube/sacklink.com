@@ -401,6 +401,20 @@ tbody tr.market-row {
   margin-top: 1px;
 }
 
+.new-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  background: #1D4ED8;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
 .best-tag {
   font-family: var(--font-mono);
   font-size: 9px;

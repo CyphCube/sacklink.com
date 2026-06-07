@@ -35,6 +35,43 @@
     return 'var(--red)';
   }
 
+
+  /* ── "New" badge tracking via localStorage ── */
+  const NEW_BADGE_DAYS = 3;
+  const SEEN_KEY = 'sacklink_seen_protocols';
+
+  function loadSeen() {
+    try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+
+  function saveSeen(seen) {
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); }
+    catch(e) {}
+  }
+
+  function updateSeen(markets) {
+    const seen = loadSeen();
+    const now  = Date.now();
+    markets.forEach(r => {
+      const key = r.slug + '|' + r.chain + '|' + r.token;
+      if (!seen[key]) seen[key] = now;
+    });
+    // Prune entries older than 30 days to keep storage clean
+    Object.keys(seen).forEach(k => {
+      if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
+    });
+    saveSeen(seen);
+    return seen;
+  }
+
+  function isNew(slug, chain, token, seen) {
+    const key = slug + '|' + chain + '|' + token;
+    const first = seen[key];
+    if (!first) return false;
+    return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
+  }
+
   function escHtml(s) {
     return String(s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -89,6 +126,7 @@
     document.getElementById('count-note').textContent =
       filtered.length + ' market' + (filtered.length !== 1 ? 's' : '');
 
+    const seen   = updateSeen(filtered.length ? filtered : (window.MARKETS || []));
     const maxTVL = Math.max(...(window.MARKETS || []).map(r => r.tvl), 1);
 
     if (!sorted.length) {
@@ -126,6 +164,7 @@
               <div class="protocol-name">
                 ${escHtml(r.protocol)}
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
+                ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
               </div>
               <div class="protocol-sub">${escHtml(r.chain.toLowerCase())}</div>
             </div>
