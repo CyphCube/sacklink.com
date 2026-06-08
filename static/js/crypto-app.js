@@ -42,10 +42,10 @@
   }
 
   /* ── "New" badge tracking ── */
-  const NEW_BADGE_DAYS   = 3;
+  const NEW_BADGE_HOURS = 48;
   const SEEN_KEY_CRYPTO  = 'sacklink_seen_crypto';
   const INIT_KEY_CRYPTO  = 'sacklink_crypto_initialized';
-  const SEEN_VERSION     = 'v1';
+  const SEEN_VERSION     = 'v4';
 
   (function resetIfNeeded() {
     try {
@@ -69,18 +69,15 @@
   function updateSeen(markets) {
     const seen = loadSeen();
     const now  = Date.now();
-    const isFirstRun = !localStorage.getItem(INIT_KEY_CRYPTO);
     markets.forEach(r => {
       const key = r.slug + '|' + r.chain + '|' + r.token;
       if (!seen[key]) {
-        seen[key] = isFirstRun
-          ? now - (NEW_BADGE_DAYS + 1) * 86400 * 1000
-          : now;
+        seen[key] = now;
       }
     });
-    if (isFirstRun) localStorage.setItem(INIT_KEY_CRYPTO, SEEN_VERSION);
+    localStorage.setItem(INIT_KEY_CRYPTO, SEEN_VERSION);
     Object.keys(seen).forEach(k => {
-      if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
+      if (now - seen[k] > 30 * 24 * 3600 * 1000) delete seen[k];
     });
     saveSeen(seen);
     return seen;
@@ -90,7 +87,7 @@
     const key = slug + '|' + chain + '|' + token;
     const first = seen[key];
     if (!first) return false;
-    return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
+    return (Date.now() - first) < NEW_BADGE_HOURS * 3600 * 1000;
   }
 
   /* ── Filter / sort ── */

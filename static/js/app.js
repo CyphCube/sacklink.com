@@ -37,7 +37,7 @@
 
 
   /* ── "New" badge tracking via localStorage ── */
-  const NEW_BADGE_DAYS = 3;
+  const NEW_BADGE_HOURS = 48;
   const SEEN_KEY = 'sacklink_seen_protocols';
 
   function loadSeen() {
@@ -51,7 +51,7 @@
   }
 
   const INITIALIZED_KEY = 'sacklink_initialized';
-  const SEEN_VERSION     = 'v2';
+  const SEEN_VERSION     = 'v4';
 
   /* Reset if this is a new version (clears bad first-run data) */
   (function resetIfNeeded() {
@@ -66,24 +66,19 @@
   function updateSeen(markets) {
     const seen = loadSeen();
     const now  = Date.now();
-    const isFirstRun = !localStorage.getItem(INITIALIZED_KEY);
 
     markets.forEach(r => {
       const key = r.slug + '|' + r.chain + '|' + r.token;
       if (!seen[key]) {
-        /* On first run, backdate to before the NEW_BADGE_DAYS window
-           so existing protocols never show the badge */
-        seen[key] = isFirstRun
-          ? now - (NEW_BADGE_DAYS + 1) * 86400 * 1000
-          : now;
+        seen[key] = now;
       }
     });
 
-    if (isFirstRun) localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
+    localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
 
     // Prune entries older than 30 days
     Object.keys(seen).forEach(k => {
-      if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
+      if (now - seen[k] > 30 * 24 * 3600 * 1000) delete seen[k];
     });
     saveSeen(seen);
     return seen;
@@ -93,7 +88,7 @@
     const key = slug + '|' + chain + '|' + token;
     const first = seen[key];
     if (!first) return false;
-    return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
+    return (Date.now() - first) < NEW_BADGE_HOURS * 3600 * 1000;
   }
 
   function chainDisplayName(chain) {
