@@ -43,6 +43,12 @@ const CRYPTO_PROTOCOL_NAMES = {
   'felix':             'Felix',
   'harmonix-finance':  'Harmonix Finance',
   'harmonix':          'Harmonix Finance',
+  'hyperlend':         'HyperLend',
+  'hyperlend-pooled':  'HyperLend',
+  'hypurrfi':          'HypurrFi',
+  'hypurrfi-pooled':   'HypurrFi',
+  'felix':             'Felix',
+  'hyperdrive':        'Hyperdrive',
   'navi-protocol':     'Navi Lending',
   'navi':              'Navi Lending',
   'scallop-lend':      'Scallop Lend',
@@ -117,6 +123,12 @@ const CRYPTO_FALLBACK_URLS = {
   'hyperunit':         () => 'https://hyperunit.xyz/',
   'harmonix-finance':  () => 'https://harmonix.fi/',
   'harmonix':          () => 'https://harmonix.fi/',
+  'hyperlend':         () => 'https://app.hyperlend.finance/',
+  'hyperlend-pooled':  () => 'https://app.hyperlend.finance/',
+  'hypurrfi':          () => 'https://app.hypurr.fi/',
+  'hypurrfi-pooled':   () => 'https://app.hypurr.fi/',
+  'felix':             () => 'https://app.felix.finance/',
+  'hyperdrive':        () => 'https://hyperdrive.fi/',
 };
 
 function cryptoResolveUrl(pool) {
