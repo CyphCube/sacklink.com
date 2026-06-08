@@ -10,8 +10,8 @@
         </a>
       </div>
       <nav class="main-nav">
-        <a class="nav-item active" href="{{ "/" | relURL }}">Stablecoins</a>
-        <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+        <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="nav-item active" href="/cryptocurrencies/">Cryptocurrencies</a>
         <a class="nav-item" href="#">RWA</a>
         <a class="nav-item" href="#">Wallets</a>
       </nav>
@@ -19,15 +19,13 @@
         <span class="live-dot" aria-hidden="true"></span>
         <span class="live-label">Live rates</span>
       </div>
-      <!-- Hamburger (mobile only) -->
       <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
-    <!-- Mobile nav drawer -->
     <nav class="mobile-nav" id="mobile-nav">
-      <a class="nav-item active" href="{{ "/" | relURL }}">Stablecoins</a>
-      <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+      <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+      <a class="nav-item active" href="/cryptocurrencies/">Cryptocurrencies</a>
       <a class="nav-item" href="#">RWA</a>
       <a class="nav-item" href="#">Wallets</a>
     </nav>
@@ -58,39 +56,12 @@
     <div class="filter-row">
 
       <!-- Token Filter -->
-      <div class="filter-group" role="group" aria-label="Filter by token">
+      <div class="filter-group token-filter" role="group" aria-label="Filter by token">
         <button class="filter-btn active" data-token="all">All</button>
-        <button class="filter-btn" data-token="USDC">USDC</button>
-        <button class="filter-btn" data-token="USDT">USDT</button>
-      </div>
-
-      <!-- Chain Filter -->
-      <div class="filter-group chain-filter" role="group" aria-label="Filter by chain">
-        <button class="filter-btn active" data-chain="all">All</button>
-        <button class="filter-btn chain-btn" data-chain="Ethereum">
-          <span class="btn-logo" data-chain-logo="Ethereum"></span>Ethereum
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Arbitrum">
-          <span class="btn-logo" data-chain-logo="Arbitrum"></span>Arbitrum
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Base">
-          <span class="btn-logo" data-chain-logo="Base"></span>Base
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Polygon">
-          <span class="btn-logo" data-chain-logo="Polygon"></span>Polygon
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Avalanche">
-          <span class="btn-logo" data-chain-logo="Avalanche"></span>Avalanche
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Solana">
-          <span class="btn-logo" data-chain-logo="Solana"></span>Solana
-        </button>
-        <button class="filter-btn chain-btn" data-chain="BSC">
-          <span class="btn-logo" data-chain-logo="BSC"></span>BNB Chain
-        </button>
-        <button class="filter-btn chain-btn" data-chain="Sui">
-          <span class="btn-logo" data-chain-logo="Sui"></span>Sui
-        </button>
+        <button class="filter-btn" data-token="ETH">ETH</button>
+        <button class="filter-btn" data-token="SOL">SOL</button>
+        <button class="filter-btn" data-token="SUI">SUI</button>
+        <button class="filter-btn" data-token="HYPE">HYPE</button>
       </div>
 
       <div class="spacer"></div>
@@ -143,15 +114,16 @@
   </main>
 
 </div>
-  <script>
-    (function(){
-      var btn = document.getElementById('hamburger');
-      var nav = document.getElementById('mobile-nav');
-      if(!btn||!nav) return;
-      btn.addEventListener('click', function(){
-        var open = nav.classList.toggle('open');
-        btn.setAttribute('aria-expanded', open);
-      });
-    })();
-  </script>
+
+<script>
+  (function(){
+    var btn = document.getElementById('hamburger');
+    var nav = document.getElementById('mobile-nav');
+    if(!btn||!nav) return;
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+  })();
+</script>
 {{ end }}

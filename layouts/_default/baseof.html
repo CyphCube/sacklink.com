@@ -26,8 +26,13 @@
 <body>
   {{ block "main" . }}{{ end }}
   <script src="{{ "js/risk.js" | relURL }}"></script>
-  <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/chains.js" | relURL }}"></script>
+  {{ if hasPrefix .RelPermalink "/cryptocurrencies" }}
+  <script src="{{ "js/crypto-data.js" | relURL }}"></script>
+  <script src="{{ "js/crypto-app.js" | relURL }}"></script>
+  {{ else }}
+  <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/app.js" | relURL }}"></script>
+  {{ end }}
 </body>
 </html>

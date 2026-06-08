@@ -446,6 +446,12 @@ tbody tr.market-row {
   border-radius: 10px;
 }
 
+
+.token-pill.eth  { background: #1e1e3a; color: #8c7df7; }
+.token-pill.sol  { background: #1a0a30; color: #b87eff; }
+.token-pill.sui  { background: #001a2e; color: #6FBCF0; }
+.token-pill.hype { background: #1a0a1a; color: #ff6bff; }
+
 .token-pill.usdc {
   background: var(--usdc-bg);
   color: var(--usdc-fg);
@@ -791,6 +797,17 @@ tbody tr.market-row {
 @media (max-width: 640px) {
   .filter-row { position: relative; }
   .chain-filter { display: flex; }
+  .token-filter .filter-btn[data-token="all"] {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--bg);
+    border-right: 1px solid var(--border-md);
+    flex-shrink: 0;
+  }
+  .token-filter .filter-btn[data-token="all"].active {
+    background: var(--bg-elevated);
+  }
   .chain-filter .filter-btn[data-chain="all"] {
     position: sticky;
     left: 0;
