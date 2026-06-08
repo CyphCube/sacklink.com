@@ -33,7 +33,9 @@
   }
 
   function chainDisplayName(chain) {
-    return chain === 'BSC' ? 'BNB Chain' : chain;
+    if (chain === 'BSC') return 'BNB Chain';
+    if (chain === 'Hyperliquid' || chain === 'Hyperliquid L1') return 'Hyperliquid L1';
+    return chain;
   }
 
   function escHtml(s) {

@@ -4,7 +4,7 @@
 
 const CRYPTO_ALLOWED_CHAINS = new Set([
   'Ethereum', 'Arbitrum', 'Base', 'Polygon',
-  'Avalanche', 'Solana', 'BSC', 'Sui', 'Optimism', 'Hyperliquid'
+  'Avalanche', 'Solana', 'BSC', 'Sui', 'Hyperliquid', 'Hyperliquid L1'
 ]);
 
 const CRYPTO_TOKENS = new Set(['ETH', 'WETH', 'SOL', 'WSOL', 'SUI', 'HYPE']);
@@ -41,6 +41,8 @@ const CRYPTO_PROTOCOL_NAMES = {
   'seamless-protocol': 'Seamless',
   'hyperlend':         'HyperLend',
   'felix':             'Felix',
+  'harmonix-finance':  'Harmonix Finance',
+  'harmonix':          'Harmonix Finance',
   'navi-protocol':     'Navi Lending',
   'navi':              'Navi Lending',
   'scallop-lend':      'Scallop Lend',
@@ -56,8 +58,71 @@ function cryptoLogoUrl(slug) {
   return `https://icons.llamao.fi/icons/protocols/${slug}?w=48&h=48`;
 }
 
+const CRYPTO_FALLBACK_URLS = {
+  /* ETH pools */
+  'aave-v3':           chain => ({
+    Ethereum:  'https://app.aave.com/markets/?marketName=proto_mainnet_v3',
+    Arbitrum:  'https://app.aave.com/markets/?marketName=proto_arbitrum_v3',
+    Base:      'https://app.aave.com/markets/?marketName=proto_base_v3',
+    Polygon:   'https://app.aave.com/markets/?marketName=proto_polygon_v3',
+    Avalanche: 'https://app.aave.com/markets/?marketName=proto_avalanche_v3',
+    Optimism:  'https://app.aave.com/markets/?marketName=proto_optimism_v3',
+  }[chain] || 'https://app.aave.com/markets/'),
+  'aave-v2':           () => 'https://app.aave.com/markets/?marketName=proto_mainnet',
+  'compound-v3':       () => 'https://app.compound.finance/',
+  'morpho-blue':       () => 'https://app.morpho.org/earn',
+  'morpho':            () => 'https://app.morpho.org/earn',
+  'spark':             () => 'https://app.spark.fi/',
+  'sparklend':         () => 'https://app.spark.fi/',
+  'fluid':             () => 'https://fluid.instadapp.io/',
+  'fluid-lending':     () => 'https://fluid.io/',
+  'fluid-lite':        () => 'https://fluid.io/',
+  'euler-v2':          () => 'https://app.euler.finance/',
+  'seamless-protocol': () => 'https://app.seamlessprotocol.com/',
+  'exactly':           () => 'https://exact.ly/',
+  'exactlyprotocol':   () => 'https://exact.ly/',
+  'dolomite':          () => 'https://app.dolomite.io/balances',
+  'silo':              () => 'https://app.silo.finance/',
+  'silo-v2':           () => 'https://v2.silo.finance/',
+  'vesper':            () => 'https://app.vesper.finance/',
+  'yearn-finance':     () => 'https://yearn.fi/vaults',
+  'beefy':             () => 'https://app.beefy.com/',
+  'harvest-finance':   () => 'https://app.harvest.finance/',
+  'gains-network':     () => 'https://gains.trade/vaults',
+  'radiant':           () => 'https://app.radiant.capital/',
+  'across':            () => 'https://across.to/pool',
+  'fusion-by-ipor':    () => 'https://app.ipor.io/fusion',
+  /* SOL pools */
+  'kamino':            () => 'https://app.kamino.finance/lending',
+  'kamino-lend':       () => 'https://app.kamino.finance/lending',
+  'marginfi':          () => 'https://app.marginfi.com/',
+  'drift-protocol':    () => 'https://app.drift.trade/earn',
+  'solend':            () => 'https://solend.fi/dashboard',
+  'jupiter-lend':      () => 'https://jup.ag/lend',
+  'loopscale':         () => 'https://app.loopscale.com/',
+  /* SUI pools */
+  'navi-protocol':     () => 'https://app.naviprotocol.io/',
+  'navi':              () => 'https://app.naviprotocol.io/',
+  'scallop-lend':      () => 'https://app.scallop.io/',
+  'scallop':           () => 'https://app.scallop.io/',
+  'kai-finance':       () => 'https://kai.finance/vaults',
+  'kai':               () => 'https://kai.finance/vaults',
+  'current':           () => 'https://app.current.finance/',
+  'ember-protocol':    chain => chain === 'Sui'
+    ? 'https://ember.so/earn/eTHIRD'
+    : 'https://ember.so/earn/pALPHA',
+  /* HYPE pools */
+  'hyperlend':         () => 'https://app.hyperlend.finance/',
+  'felix':             () => 'https://app.felix.finance/',
+  'hyperunit':         () => 'https://hyperunit.xyz/',
+  'harmonix-finance':  () => 'https://harmonix.fi/',
+  'harmonix':          () => 'https://harmonix.fi/',
+};
+
 function cryptoResolveUrl(pool) {
   if (pool.url && pool.url.startsWith('http')) return pool.url;
+  const entry = CRYPTO_FALLBACK_URLS[pool.project];
+  if (entry) return typeof entry === 'function' ? entry(pool.chain) : entry;
   return null;
 }
 
