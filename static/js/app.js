@@ -95,6 +95,11 @@
     return chain === 'BSC' ? 'BNB Chain' : chain;
   }
 
+  function truncate(s, n) {
+    n = n || 16;
+    return s.length > n ? s.slice(0, n) + '…' : s;
+  }
+
   function escHtml(s) {
     return String(s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -185,7 +190,7 @@
             </div>
             <div>
               <div class="protocol-name">
-                ${escHtml(r.protocol)}
+                ${escHtml(truncate(r.protocol))}
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
                 ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
               </div>
