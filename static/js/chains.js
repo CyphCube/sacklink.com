@@ -8,7 +8,12 @@ window.CHAIN_META = {
   Avalanche: { slug: 'avalanche', color: '#E84142' },
   Solana:    { slug: 'solana',    color: '#9945FF' },
   BSC:       { slug: 'bsc',       color: '#F0B90B' },
-  Sui:       { slug: 'sui',       color: '#6FBCF0' },
+  Sui:            { slug: 'sui',            color: '#6FBCF0' },
+  Hyperliquid:    { slug: 'hyperliquid-l1',  color: '#00E5C0' },
+  'Hyperliquid L1': { slug: 'hyperliquid-l1', color: '#00E5C0' },
+  Aptos:          { slug: 'aptos',           color: '#2DD8A3' },
+  Stellar:        { slug: 'stellar',         color: '#7B7BEE' },
+  XRPL:           { slug: 'xrpl',            color: '#346AA9' },
 };
 
 window.chainLogo = function(chain, size) {

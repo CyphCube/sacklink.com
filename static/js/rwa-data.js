@@ -14,6 +14,11 @@ const RWA_CATEGORIES = new Set([
   'Undercollateralized Lending', 'Institutional'
 ]);
 
+/* Tokens to exclude — stablecoins and crypto that slip through RWA filters */
+const RWA_EXCLUDED_TOKENS = new Set([
+  'USDC', 'USDT', 'YNETHX', 'YNLSDE',
+]);
+
 /* Known RWA project slugs as fallback if category not set */
 const RWA_PROJECTS = new Set([
   'ondo-finance', 'ondo', 'maple', 'maple-finance',
@@ -144,6 +149,7 @@ window.fetchRwaMarkets = async function () {
     if (!p.symbol)                               return false;
     if ((p.apy || 0) <= 0)                      return false;
     if ((p.tvlUsd || 0) < 1_000_000)           return false;
+    if (RWA_EXCLUDED_TOKENS.has(p.symbol.toUpperCase())) return false;
     /* Match by category or known project slug */
     const cat = (p.category || '').trim();
     if (RWA_CATEGORIES.has(cat)) return true;
