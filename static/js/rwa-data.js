@@ -16,7 +16,7 @@ const RWA_CATEGORIES = new Set([
 
 /* Tokens to exclude — stablecoins and crypto that slip through RWA filters */
 const RWA_EXCLUDED_TOKENS = new Set([
-  'USDC', 'USDT', 'YNETHX', 'YNLSDE',
+  'USDC', 'USDT', 'YNETHX', 'YNLSDE', 'YNETH',
 ]);
 
 /* Known RWA project slugs as fallback if category not set */
