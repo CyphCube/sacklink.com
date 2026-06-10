@@ -9,8 +9,6 @@ window.CHAIN_META = {
   Solana:    { slug: 'solana',    color: '#9945FF' },
   BSC:       { slug: 'bsc',       color: '#F0B90B' },
   Sui:       { slug: 'sui',       color: '#6FBCF0' },
-  Hyperliquid:    { slug: 'hyperliquid-l1', color: '#00E5C0' },
-  'Hyperliquid L1': { slug: 'hyperliquid-l1', color: '#00E5C0' },
 };
 
 window.chainLogo = function(chain, size) {

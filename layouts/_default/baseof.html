@@ -30,6 +30,9 @@
   {{ if hasPrefix .RelPermalink "/cryptocurrencies" }}
   <script src="{{ "js/crypto-data.js" | relURL }}"></script>
   <script src="{{ "js/crypto-app.js" | relURL }}"></script>
+  {{ else if hasPrefix .RelPermalink "/rwa" }}
+  <script src="{{ "js/rwa-data.js" | relURL }}"></script>
+  <script src="{{ "js/rwa-app.js" | relURL }}"></script>
   {{ else }}
   <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/app.js" | relURL }}"></script>
