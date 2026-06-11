@@ -822,3 +822,106 @@ tbody tr.market-row {
   tbody td:first-child  { border-right: 1px solid var(--border); }
 }
 
+/* ── Wallets page ── */
+.col-wallet-name { width: 22%; }
+.col-platforms   { width: 28%; }
+.col-tokens      { width: 25%; }
+.col-mau         { width: 13%; font-family: var(--font-mono); }
+.col-opensource  { width: 12%; }
+
+.platform-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.token-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.wallet-token-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.mau-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.os-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.os-yes { background: var(--risk-low-bg); color: var(--risk-low-fg); }
+.os-no  { background: var(--bg-elevated); color: var(--text-dim); }
+
+/* ── Platform button logos ── */
+.platform-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.platform-btn-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.platform-btn-logo svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* ── Wallets page mobile ── */
+@media (max-width: 640px) {
+  .col-wallet-name { width: auto; min-width: 140px; }
+  .col-platforms   { width: auto; min-width: 160px; }
+  .col-tokens      { width: auto; min-width: 150px; }
+  .col-mau         { width: auto; min-width: 80px; }
+  .col-opensource  { width: auto; min-width: 90px; }
+
+  #wallets-table {
+    min-width: 640px;
+    table-layout: auto;
+  }
+
+  .platform-badges { flex-wrap: nowrap; overflow-x: auto; }
+  .token-pills-wrap { flex-wrap: nowrap; overflow-x: auto; }
+}
+

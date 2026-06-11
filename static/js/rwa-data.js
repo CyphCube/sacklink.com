@@ -133,8 +133,13 @@ function rwaToMarket(pool) {
     trend,
     logoUrl:    rwaLogoUrl(pool.project),
     url:        rwaResolveUrl(pool),
+    poolUuid:   pool.pool || null,
   };
 }
+
+const POOL_URLS = {
+  /* add: ID: "url" */
+};
 
 window.RWA_MARKETS = [];
 
@@ -165,11 +170,27 @@ window.fetchRwaMarkets = async function () {
     }
   });
 
-  let _id = 30001;
+  /* Permanent ID assignment — keyed by pool UUID, stored in localStorage */
+  const ID_KEY  = 'sacklink_pool_ids_rwa';
+  const ID_START = 30001;
+  let _idMap;
+  try { _idMap = JSON.parse(localStorage.getItem(ID_KEY) || '{}'); }
+  catch(e) { _idMap = {}; }
+  let _nextId = ID_START + Object.keys(_idMap).length;
+
   window.RWA_MARKETS = Array.from(seen.values())
     .map(rwaToMarket)
     .sort((a, b) => b.apy - a.apy)
-    .map(r => ({ ...r, id: _id++ }));
+    .map(r => {
+      const uuid = r.poolUuid;
+      if (uuid && !_idMap[uuid]) {
+        _idMap[uuid] = _nextId++;
+      }
+      const assignedId = uuid ? _idMap[uuid] : _nextId++;
+      const overrideUrl = POOL_URLS[assignedId];
+      return { ...r, id: assignedId, url: overrideUrl || r.url };
+    });
+  try { localStorage.setItem(ID_KEY, JSON.stringify(_idMap)); } catch(e) {}
 
   return window.RWA_MARKETS;
 };

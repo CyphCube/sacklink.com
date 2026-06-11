@@ -33,6 +33,9 @@
   {{ else if hasPrefix .RelPermalink "/rwa" }}
   <script src="{{ "js/rwa-data.js" | relURL }}"></script>
   <script src="{{ "js/rwa-app.js" | relURL }}"></script>
+  {{ else if hasPrefix .RelPermalink "/wallets" }}
+  <script src="{{ "js/wallets-data.js" | relURL }}"></script>
+  <script src="{{ "js/wallets-app.js" | relURL }}"></script>
   {{ else }}
   <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/app.js" | relURL }}"></script>

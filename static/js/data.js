@@ -502,8 +502,14 @@ function toMarket(pool) {
     prediction: pool.predictions?.predictedClass || null,
     logoUrl:    logoUrl(pool.project),
     url,
+    poolUuid:   pool.pool || null,
   };
 }
+
+/* Per-pool URLs keyed by permanent market ID — overrides all other URL logic */
+const POOL_URLS = {
+
+};
 
 window.MARKETS = [];
 
@@ -534,11 +540,27 @@ window.fetchMarkets = async function () {
     }
   });
 
-  let _id = 10001;
+  /* Permanent ID assignment — keyed by pool UUID, stored in localStorage */
+  const ID_KEY  = 'sacklink_pool_ids_stable';
+  const ID_START = 10001;
+  let _idMap;
+  try { _idMap = JSON.parse(localStorage.getItem(ID_KEY) || '{}'); }
+  catch(e) { _idMap = {}; }
+  let _nextId = ID_START + Object.keys(_idMap).length;
+
   window.MARKETS = Array.from(seen.values())
     .map(toMarket)
     .sort((a, b) => b.apy - a.apy)
-    .map(r => ({ ...r, id: _id++ }));
+    .map(r => {
+      const uuid = r.poolUuid;
+      if (uuid && !_idMap[uuid]) {
+        _idMap[uuid] = _nextId++;
+      }
+      const assignedId = uuid ? _idMap[uuid] : _nextId++;
+      const overrideUrl = POOL_URLS[assignedId];
+      return { ...r, id: assignedId, url: overrideUrl || r.url };
+    });
+  try { localStorage.setItem(ID_KEY, JSON.stringify(_idMap)); } catch(e) {}
 
   /* Async-patch missing URLs from GitHub adapter files */
   const missing = window.MARKETS.filter(m => !m.url);

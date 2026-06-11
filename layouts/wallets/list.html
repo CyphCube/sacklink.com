@@ -1,0 +1,104 @@
+{{ define "main" }}
+<div id="app">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <a href="{{ "/" | relURL }}" class="logo-link">
+          <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="site-logo" />
+        </a>
+      </div>
+      <nav class="main-nav">
+        <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+        <a class="nav-item" href="/rwa/">RWA</a>
+        <a class="nav-item active" href="/wallets/">Wallets</a>
+      </nav>
+      <div class="live-indicator" style="visibility:hidden">
+        <span class="live-dot"></span>
+        <span class="live-label">Live rates</span>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+      <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+      <a class="nav-item" href="/rwa/">RWA</a>
+      <a class="nav-item active" href="/wallets/">Wallets</a>
+    </nav>
+  </header>
+
+  <section class="controls" aria-label="Filter controls">
+    <div class="filter-row">
+      <div class="filter-group chain-filter" role="group" aria-label="Filter by platform">
+        <button class="filter-btn active" data-chain="__platform_all__" data-platform="all">All</button>
+        <button class="filter-btn platform-btn" data-platform="iOS">
+          <span class="platform-btn-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#A2AAAD"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></span>iOS
+        </button>
+        <button class="filter-btn platform-btn" data-platform="Android">
+          <span class="platform-btn-logo"><svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" fill="#3DDC84"><path d="M420.55,301.93a24,24,0,1,1,24-24,24,24,0,0,1-24,24m-265.1,0a24,24,0,1,1,24-24,24,24,0,0,1-24,24m273.7-144.48,47.94-83a10,10,0,1,0-17.27-10h0l-48.54,84.07a301.25,301.25,0,0,0-246.56,0L116.18,64.45a10,10,0,1,0-17.27,10h0l47.94,83C64.53,202.22,8.24,285.55,0,384H576c-8.24-98.45-64.54-181.78-146.85-226.55"/></svg></span>Android
+        </button>
+        <button class="filter-btn platform-btn" data-platform="Extension">
+          <span class="platform-btn-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#4285F4"/><circle cx="12" cy="12" r="6" fill="white"/><circle cx="12" cy="12" r="3.5" fill="#4285F4"/><path d="M12 2a10 10 0 0 1 8.66 5H12a5 5 0 0 0-4.33 2.5L5.34 5.67A10 10 0 0 1 12 2z" fill="#EA4335"/><path d="M22 12a10 10 0 0 1-5 8.66l-3.5-6.06A5 5 0 0 0 17 12z" fill="#FBBC05"/><path d="M12 22a10 10 0 0 1-8.66-5L6.84 14A5 5 0 0 0 12 17z" fill="#34A853"/></svg></span>Extension
+        </button>
+        <button class="filter-btn platform-btn" data-platform="Desktop">
+          <span class="platform-btn-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#60A5FA"><path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"/></svg></span>Desktop
+        </button>
+        <button class="filter-btn platform-btn" data-platform="Hardware">
+          <span class="platform-btn-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#F0B90B"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg></span>Hardware
+        </button>
+      </div>
+      <div class="filter-group chain-filter" role="group" aria-label="Filter by crypto">
+        <button class="filter-btn active" data-chain="__crypto_all__" data-crypto="all">All</button>
+        <button class="filter-btn" data-crypto="BTC">BTC</button>
+        <button class="filter-btn" data-crypto="ETH">ETH</button>
+        <button class="filter-btn" data-crypto="SOL">SOL</button>
+        <button class="filter-btn" data-crypto="BNB">BNB</button>
+        <button class="filter-btn" data-crypto="SUI">SUI</button>
+        <button class="filter-btn" data-crypto="HYPE">HYPE</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="table-section">
+    <div class="table-wrap" role="region" aria-label="Wallets">
+      <table id="wallets-table">
+        <thead>
+          <tr>
+            <th class="col-wallet-name sortable sorted" scope="col" data-sort="name">
+              Wallet <span class="sort-arrow" aria-hidden="true">↓</span>
+            </th>
+            <th class="col-platforms" scope="col">Platforms</th>
+            <th class="col-tokens" scope="col">Supported Tokens</th>
+            <th class="col-mau sortable" scope="col" data-sort="mau">
+              MAU <span class="sort-arrow" aria-hidden="true"></span>
+            </th>
+            <th class="col-opensource" scope="col">Open Source</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5" class="loading-row">No wallets added yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <footer class="table-footer">
+      <span id="count-note" class="footer-note"></span>
+      <span class="footer-note">Data curated manually</span>
+    </footer>
+  </main>
+
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('hamburger');
+    var nav = document.getElementById('mobile-nav');
+    if(!btn||!nav) return;
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+  })();
+</script>
+{{ end }}

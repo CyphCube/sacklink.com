@@ -79,7 +79,7 @@ const CRYPTO_MARKET_URLS = {
   'dolomite|Arbitrum|ETH':                     'https://app.dolomite.io/earn',
   'dolomite|Ethereum|ETH':                     'https://app.dolomite.io/earn',
   'extra-finance-leverage-farming|Base|ETH':   'https://app.extrafi.io/lend',
-  'fluid-lending|Ethereum|ETH':                'https://fluid.io/vaults/1/11',
+  'fluid-lending|Ethereum|ETH':                'https://fluid.io/vaults/1/12',
   'fluid-lending|Ethereum|WETH':               'https://fluid.io/lending/1/WETH',
   'fluid-lending|Base|ETH':                    'https://fluid.io/vaults/8453/1',
   'fluid-lending|Arbitrum|ETH':                'https://fluid.io/vaults/42161/1',
@@ -203,8 +203,14 @@ function cryptoToMarket(pool) {
     trend,
     logoUrl:    cryptoLogoUrl(pool.project),
     url:        cryptoResolveUrl(pool),
+    poolUuid:   pool.pool || null,
   };
 }
+
+const POOL_URLS = {
+  20031: 'https://fluid.io/vaults/1/11',
+  20033: 'https://fluid.io/lending/1/WETH',
+};
 
 window.CRYPTO_MARKETS = [];
 
@@ -224,11 +230,27 @@ window.fetchCryptoMarkets = async function () {
   });
 
   // No deduplication — show all pools, different pools can have same protocol/chain/token
-  let _id = 20001;
+  /* Permanent ID assignment — keyed by pool UUID, stored in localStorage */
+  const ID_KEY  = 'sacklink_pool_ids_crypto';
+  const ID_START = 20001;
+  let _idMap;
+  try { _idMap = JSON.parse(localStorage.getItem(ID_KEY) || '{}'); }
+  catch(e) { _idMap = {}; }
+  let _nextId = ID_START + Object.keys(_idMap).length;
+
   window.CRYPTO_MARKETS = pools
     .map(cryptoToMarket)
     .sort((a, b) => b.apy - a.apy)
-    .map(r => ({ ...r, id: _id++ }));
+    .map(r => {
+      const uuid = r.poolUuid;
+      if (uuid && !_idMap[uuid]) {
+        _idMap[uuid] = _nextId++;
+      }
+      const assignedId = uuid ? _idMap[uuid] : _nextId++;
+      const overrideUrl = POOL_URLS[assignedId];
+      return { ...r, id: assignedId, url: overrideUrl || r.url };
+    });
+  try { localStorage.setItem(ID_KEY, JSON.stringify(_idMap)); } catch(e) {}
 
   return window.CRYPTO_MARKETS;
 };
