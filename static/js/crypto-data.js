@@ -224,9 +224,11 @@ window.fetchCryptoMarkets = async function () {
   });
 
   // No deduplication — show all pools, different pools can have same protocol/chain/token
+  let _id = 20001;
   window.CRYPTO_MARKETS = pools
     .map(cryptoToMarket)
-    .sort((a, b) => b.apy - a.apy);
+    .sort((a, b) => b.apy - a.apy)
+    .map(r => ({ ...r, id: _id++ }));
 
   return window.CRYPTO_MARKETS;
 };

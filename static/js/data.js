@@ -534,9 +534,11 @@ window.fetchMarkets = async function () {
     }
   });
 
+  let _id = 10001;
   window.MARKETS = Array.from(seen.values())
     .map(toMarket)
-    .sort((a, b) => b.apy - a.apy);
+    .sort((a, b) => b.apy - a.apy)
+    .map(r => ({ ...r, id: _id++ }));
 
   /* Async-patch missing URLs from GitHub adapter files */
   const missing = window.MARKETS.filter(m => !m.url);

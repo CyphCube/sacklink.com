@@ -181,7 +181,7 @@
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
                 ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
               </div>
-              <div class="protocol-sub">${escHtml(chainDisplayName(r.chain).toLowerCase())}</div>
+              <div class="protocol-sub">#${r.id}</div>
             </div>
           </div>
         </td>

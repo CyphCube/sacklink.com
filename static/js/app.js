@@ -37,7 +37,7 @@
 
 
   /* ── "New" badge tracking via localStorage ── */
-  const NEW_BADGE_HOURS = 48;
+  const NEW_BADGE_DAYS = 3;
   const SEEN_KEY = 'sacklink_seen_protocols';
 
   function loadSeen() {
@@ -51,7 +51,7 @@
   }
 
   const INITIALIZED_KEY = 'sacklink_initialized';
-  const SEEN_VERSION     = 'v4';
+  const SEEN_VERSION     = 'v2';
 
   /* Reset if this is a new version (clears bad first-run data) */
   (function resetIfNeeded() {
@@ -66,19 +66,24 @@
   function updateSeen(markets) {
     const seen = loadSeen();
     const now  = Date.now();
+    const isFirstRun = !localStorage.getItem(INITIALIZED_KEY);
 
     markets.forEach(r => {
       const key = r.slug + '|' + r.chain + '|' + r.token;
       if (!seen[key]) {
-        seen[key] = now;
+        /* On first run, backdate to before the NEW_BADGE_DAYS window
+           so existing protocols never show the badge */
+        seen[key] = isFirstRun
+          ? now - (NEW_BADGE_DAYS + 1) * 86400 * 1000
+          : now;
       }
     });
 
-    localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
+    if (isFirstRun) localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
 
     // Prune entries older than 30 days
     Object.keys(seen).forEach(k => {
-      if (now - seen[k] > 30 * 24 * 3600 * 1000) delete seen[k];
+      if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
     });
     saveSeen(seen);
     return seen;
@@ -88,16 +93,11 @@
     const key = slug + '|' + chain + '|' + token;
     const first = seen[key];
     if (!first) return false;
-    return (Date.now() - first) < NEW_BADGE_HOURS * 3600 * 1000;
+    return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
   }
 
   function chainDisplayName(chain) {
     return chain === 'BSC' ? 'BNB Chain' : chain;
-  }
-
-  function truncate(s, n) {
-    n = n || 16;
-    return s.length > n ? s.slice(0, n) + '…' : s;
   }
 
   function escHtml(s) {
@@ -190,11 +190,11 @@
             </div>
             <div>
               <div class="protocol-name">
-                ${escHtml(truncate(r.protocol))}
+                ${escHtml(r.protocol)}
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
                 ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
               </div>
-              <div class="protocol-sub">${escHtml(chainDisplayName(r.chain).toLowerCase())}</div>
+              <div class="protocol-sub">#${r.id}</div>
             </div>
           </div>
         </td>

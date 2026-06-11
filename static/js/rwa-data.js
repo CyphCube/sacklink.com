@@ -165,9 +165,11 @@ window.fetchRwaMarkets = async function () {
     }
   });
 
+  let _id = 30001;
   window.RWA_MARKETS = Array.from(seen.values())
     .map(rwaToMarket)
-    .sort((a, b) => b.apy - a.apy);
+    .sort((a, b) => b.apy - a.apy)
+    .map(r => ({ ...r, id: _id++ }));
 
   return window.RWA_MARKETS;
 };
