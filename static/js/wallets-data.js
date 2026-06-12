@@ -1,18 +1,135 @@
 /* Sacklink — Wallets Data
-   Add wallets manually below.
+   Update mau values manually as needed.
 
-   Each wallet object:
-   {
-     name:        'MetaMask',
-     logo:        'https://...',
-     url:         'https://metamask.io',
-     platforms:   ['iOS', 'Android', 'Extension', 'Desktop'],
-     tokens:      ['ETH', 'BNB'],
-     mau:         '30M+',
-     openSource:  true,
-   }
+   platforms: 'iOS' | 'Android' | 'Extension' | 'Desktop' | 'Hardware'
+   tokens:    'BTC' | 'ETH' | 'SOL' | 'BNB' | 'SUI' | 'HYPE'
 */
 
 window.WALLETS = [
-  /* wallets go here */
+  {
+    name:       'MetaMask',
+    logo:       'https://icons.llamao.fi/icons/protocols/metamask?w=48&h=48',
+    url:        'https://metamask.io',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'BNB', 'HYPE'],
+    mau:        '30M+',
+    openSource: true,
+  },
+  {
+    name:       'Trust Wallet',
+    logo:       'https://icons.llamao.fi/icons/protocols/trust-wallet?w=48&h=48',
+    url:        'https://trustwallet.com',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB'],
+    mau:        '17M+',
+    openSource: true,
+  },
+  {
+    name:       'Phantom',
+    logo:       'https://icons.llamao.fi/icons/protocols/phantom?w=48&h=48',
+    url:        'https://phantom.app',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'SOL', 'BTC'],
+    mau:        '7M+',
+    openSource: false,
+  },
+  {
+    name:       'Base App',
+    logo:       'https://www.google.com/s2/favicons?domain=base.org&sz=64',
+    url:        'https://join.base.app/',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['BTC', 'ETH', 'SOL'],
+    mau:        '3.2M+',
+    openSource: true,
+  },
+  {
+    name:       'Rabby',
+    logo:       'https://icons.llamao.fi/icons/protocols/rabby?w=48&h=48',
+    url:        'https://rabby.io',
+    platforms:  ['Extension', 'Desktop'],
+    tokens:     ['ETH', 'BNB', 'HYPE'],
+    mau:        '4.2M+',
+    openSource: true,
+  },
+  {
+    name:       'Exodus',
+    logo:       'https://icons.llamao.fi/icons/protocols/exodus?w=48&h=48',
+    url:        'https://www.exodus.com',
+    platforms:  ['iOS', 'Android', 'Desktop', 'Extension'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB'],
+    mau:        '1.5M+',
+    openSource: false,
+  },
+  {
+    name:       'Zerion',
+    logo:       'https://icons.llamao.fi/icons/protocols/zerion?w=48&h=48',
+    url:        'https://zerion.io',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'BNB'],
+    mau:        '300K+',
+    openSource: false,
+  },
+  {
+    name:       'OKX Wallet',
+    logo:       'https://icons.llamao.fi/icons/protocols/okx?w=48&h=48',
+    url:        'https://www.okx.com/web3',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
+    mau:        '20M+',
+    openSource: false,
+  },
+  {
+    name:       'Backpack',
+    logo:       'https://icons.llamao.fi/icons/protocols/backpack?w=48&h=48',
+    url:        'https://www.backpack.app',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'SOL', 'HYPE'],
+    mau:        '500K+',
+    openSource: true,
+  },
+  {
+    name:       'Rainbow',
+    logo:       'https://icons.llamao.fi/icons/protocols/rainbow?w=48&h=48',
+    url:        'https://rainbow.me',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'BNB'],
+    mau:        '1M+',
+    openSource: true,
+  },
+  {
+    name:       'Ledger',
+    logo:       'https://icons.llamao.fi/icons/protocols/ledger?w=48&h=48',
+    url:        'https://www.ledger.com',
+    platforms:  ['Hardware', 'Desktop'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
+    mau:        '6M+',
+    openSource: false,
+  },
+  {
+    name:       'Trezor',
+    logo:       'https://icons.llamao.fi/icons/protocols/trezor?w=48&h=48',
+    url:        'https://trezor.io',
+    platforms:  ['Hardware', 'Desktop'],
+    tokens:     ['BTC', 'ETH', 'BNB'],
+    mau:        '1M+',
+    openSource: true,
+  },
+  {
+    name:       'Uniswap Wallet',
+    logo:       'https://icons.llamao.fi/icons/protocols/uniswap?w=48&h=48',
+    url:        'https://wallet.uniswap.org',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['ETH', 'BNB'],
+    mau:        '500K+',
+    openSource: true,
+  },
+  {
+    name:       'Slush',
+    logo:       'https://www.google.com/s2/favicons?domain=slush.app&sz=64',
+    url:        'https://slush.app',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['SUI'],
+    mau:        '200K+',
+    openSource: true,
+  },
 ];
