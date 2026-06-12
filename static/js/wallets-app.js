@@ -153,7 +153,15 @@
     });
   }
 
+  function injectButtonLogos() {
+    document.querySelectorAll('[data-chain-logo]').forEach(span => {
+      const chain = span.dataset.chainLogo;
+      if (window.chainLogo) span.innerHTML = window.chainLogo(chain, 16);
+    });
+  }
+
   function init() {
+    injectButtonLogos();
     bindFilters();
     bindRowClicks();
     updateSortHeaders();

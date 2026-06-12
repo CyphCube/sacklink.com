@@ -1,6 +1,7 @@
 /* yield.fi — Chain logos via DefiLlama's icon CDN */
 
 window.CHAIN_META = {
+  BTC:       { slug: 'bitcoin',   color: '#F7931A' },
   Ethereum:  { slug: 'ethereum',  color: '#627EEA' },
   Arbitrum:  { slug: 'arbitrum',  color: '#12AAFF' },
   Base:      { slug: 'base',      color: '#0052FF' },

@@ -52,12 +52,24 @@
       </div>
       <div class="filter-group chain-filter" role="group" aria-label="Filter by crypto">
         <button class="filter-btn active" data-chain="__crypto_all__" data-crypto="all">All</button>
-        <button class="filter-btn" data-crypto="BTC">BTC</button>
-        <button class="filter-btn" data-crypto="ETH">ETH</button>
-        <button class="filter-btn" data-crypto="SOL">SOL</button>
-        <button class="filter-btn" data-crypto="BNB">BNB</button>
-        <button class="filter-btn" data-crypto="SUI">SUI</button>
-        <button class="filter-btn" data-crypto="HYPE">HYPE</button>
+        <button class="filter-btn platform-btn" data-crypto="BTC">
+          <span class="btn-logo" data-chain-logo="BTC"></span>BTC
+        </button>
+        <button class="filter-btn platform-btn" data-crypto="ETH">
+          <span class="btn-logo" data-chain-logo="Ethereum"></span>ETH
+        </button>
+        <button class="filter-btn platform-btn" data-crypto="SOL">
+          <span class="btn-logo" data-chain-logo="Solana"></span>SOL
+        </button>
+        <button class="filter-btn platform-btn" data-crypto="BNB">
+          <span class="btn-logo" data-chain-logo="BSC"></span>BNB
+        </button>
+        <button class="filter-btn platform-btn" data-crypto="SUI">
+          <span class="btn-logo" data-chain-logo="Sui"></span>SUI
+        </button>
+        <button class="filter-btn platform-btn" data-crypto="HYPE">
+          <span class="btn-logo" data-chain-logo="Hyperliquid L1"></span>HYPE
+        </button>
       </div>
     </div>
   </section>
@@ -73,7 +85,7 @@
             <th class="col-platforms" scope="col">Platforms</th>
             <th class="col-tokens" scope="col">Supported Tokens</th>
             <th class="col-mau sortable" scope="col" data-sort="mau">
-              MAU <span class="sort-arrow" aria-hidden="true"></span>
+              Monthly Users <span class="sort-arrow" aria-hidden="true"></span>
             </th>
             <th class="col-opensource" scope="col">Open Source</th>
           </tr>
