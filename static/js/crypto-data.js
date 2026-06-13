@@ -7,10 +7,11 @@ const CRYPTO_ALLOWED_CHAINS = new Set([
   'Avalanche', 'Solana', 'BSC', 'Sui', 'Hyperliquid', 'Hyperliquid L1'
 ]);
 
-const CRYPTO_TOKENS = new Set(['ETH', 'WETH', 'SOL', 'WSOL', 'SUI', 'HYPE']);
+const CRYPTO_TOKENS = new Set(['ETH', 'WETH', 'BTC', 'WBTC', 'BTCB', 'SOL', 'WSOL', 'SUI', 'HYPE']);
 
 const CRYPTO_TOKEN_DISPLAY = {
   'ETH': 'ETH', 'WETH': 'ETH',
+  'BTC': 'BTC', 'WBTC': 'BTC', 'BTCB': 'BTC',
   'SOL': 'SOL', 'WSOL': 'SOL',
   'SUI': 'SUI',
   'HYPE': 'HYPE',
@@ -66,6 +67,13 @@ function cryptoLogoUrl(slug) {
 
 /* Specific per-market URLs for crypto tokens (slug|Chain|TOKEN) */
 const CRYPTO_MARKET_URLS = {
+  /* BTC pools */
+  'aave-v3|Ethereum|BTC':   'https://app.aave.com/reserve-overview/?underlyingAsset=0x2260fac5e5542a773aa44fbcfedf7c193bc2c599&marketName=proto_mainnet_v3',
+  'aave-v3|Arbitrum|BTC':   'https://app.aave.com/reserve-overview/?underlyingAsset=0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f&marketName=proto_arbitrum_v3',
+  'aave-v3|Base|BTC':       'https://app.aave.com/reserve-overview/?underlyingAsset=0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf&marketName=proto_base_v3',
+  'aave-v3|Polygon|BTC':    'https://app.aave.com/reserve-overview/?underlyingAsset=0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6&marketName=proto_polygon_v3',
+  'compound-v3|Ethereum|BTC': 'https://v3-app.compound.finance/markets/wbtc-mainnet',
+  /* ETH pools */
   'aave-v3|Base|ETH':                          'https://app.aave.com/reserve-overview/?underlyingAsset=0x4200000000000000000000000000000000000006&marketName=proto_base_v3',
   'aave-v3|Ethereum|ETH':                      'https://app.aave.com/reserve-overview/?underlyingAsset=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2&marketName=proto_mainnet_v3',
   'aave-v3|Arbitrum|ETH':                      'https://app.aave.com/reserve-overview/?underlyingAsset=0x82af49447d8a07e3bd95bd0d56f35241523fbab1&marketName=proto_arbitrum_v3',
@@ -101,7 +109,6 @@ const CRYPTO_MARKET_URLS = {
 };
 
 const CRYPTO_FALLBACK_URLS = {
-  /* ETH pools */
   'aave-v3':           chain => ({
     Ethereum:  'https://app.aave.com/markets/?marketName=proto_mainnet_v3',
     Arbitrum:  'https://app.aave.com/markets/?marketName=proto_arbitrum_v3',

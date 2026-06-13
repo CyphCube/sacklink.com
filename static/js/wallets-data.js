@@ -53,7 +53,7 @@ window.WALLETS = [
   },
   {
     name:       'Exodus',
-    logo:       'https://icons.llamao.fi/icons/protocols/exodus?w=48&h=48',
+    logo:       'https://www.google.com/s2/favicons?domain=exodus.com&sz=64',
     url:        'https://www.exodus.com',
     platforms:  ['iOS', 'Android', 'Desktop', 'Extension'],
     tokens:     ['BTC', 'ETH', 'SOL', 'BNB'],
@@ -98,7 +98,7 @@ window.WALLETS = [
   },
   {
     name:       'Ledger',
-    logo:       'https://icons.llamao.fi/icons/protocols/ledger?w=48&h=48',
+    logo:       'https://www.google.com/s2/favicons?domain=ledger.com&sz=64',
     url:        'https://www.ledger.com',
     platforms:  ['Hardware', 'Desktop'],
     tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
@@ -107,7 +107,7 @@ window.WALLETS = [
   },
   {
     name:       'Trezor',
-    logo:       'https://icons.llamao.fi/icons/protocols/trezor?w=48&h=48',
+    logo:       'https://www.google.com/s2/favicons?domain=trezor.io&sz=64',
     url:        'https://trezor.io',
     platforms:  ['Hardware', 'Desktop'],
     tokens:     ['BTC', 'ETH', 'BNB'],
