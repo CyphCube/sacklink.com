@@ -47,6 +47,12 @@
 
       <div class="post-divider"></div>
 
+      {{ with .Params.image }}
+      <div class="post-image-wrap">
+        <img src="{{ . }}" alt="{{ $.Title }}" class="post-image" />
+      </div>
+      {{ end }}
+
       <article class="post-content">
         {{ .Content }}
       </article>

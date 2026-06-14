@@ -1,6 +1,7 @@
 ---
 title: "Why Trezor and Ledger Apps Are Different From Traditional Crypto Wallet Apps"
 date: 2026-06-14
+image: "/blog/hardware-vs-hot-wallet.svg"
 ---
 
 Many newcomers to cryptocurrency assume that all wallet apps work the same way. After all, whether it's on a desktop computer or a mobile phone, most crypto wallets allow users to create accounts, store assets, send transactions, and manage their portfolios.

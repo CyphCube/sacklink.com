@@ -1099,6 +1099,19 @@ tbody tr.market-row {
 .post-content a      { color: var(--green); text-decoration: underline; }
 .post-content code   { font-family: var(--font-mono); font-size: 0.875em; background: var(--bg-elevated); border-radius: 3px; padding: 0.1em 0.4em; }
 
+.post-image-wrap {
+  margin-bottom: 48px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.post-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .post-footer {
   margin-top: 64px;
   padding-top: 32px;
