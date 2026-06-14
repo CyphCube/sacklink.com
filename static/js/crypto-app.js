@@ -149,7 +149,9 @@
       filtered.length + ' market' + (filtered.length !== 1 ? 's' : '');
 
     const maxTVL = Math.max(...(window.CRYPTO_MARKETS || []).map(r => r.tvl), 1);
-    const seen   = updateSeen(filtered.length ? filtered : (window.CRYPTO_MARKETS || []));
+    const seenBefore = loadSeen();
+    updateSeen(filtered.length ? filtered : (window.CRYPTO_MARKETS || []));
+    const seen = seenBefore;
 
     if (!sorted.length) {
       document.getElementById('tbody').innerHTML =
