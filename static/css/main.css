@@ -923,36 +923,13 @@ tbody tr.market-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.footer-logo-link { display: flex; align-items: center; }
-
-.footer-logo {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  opacity: 0.8;
+  gap: 16px;
 }
 
 .footer-copy {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--text-dim);
-}
-
-.footer-nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
 }
 
 .footer-link {
@@ -964,11 +941,6 @@ tbody tr.market-row {
 }
 
 .footer-link:hover { color: var(--text-primary); }
-
-@media (max-width: 640px) {
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .footer-nav   { gap: 16px; }
-}
 
 /* ── Blog page ── */
 .blog-section {
