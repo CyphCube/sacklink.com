@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ .Site.LanguageCode }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ .Site.Title }} — {{ .Site.Params.tagline }}</title>
-  <meta name="description" content="{{ .Site.Params.description }}" />
+
+  {{- $pageTitle := "" -}}
+  {{- $pageDesc  := "" -}}
+  {{- if .IsHome -}}
+    {{- $pageTitle = printf "Sacklink — %s" .Site.Params.tagline -}}
+    {{- $pageDesc  = .Description | default .Site.Params.description -}}
+  {{- else if .Params.description -}}
+    {{- $pageTitle = printf "%s | Sacklink" .Title -}}
+    {{- $pageDesc  = .Params.description -}}
+  {{- else if .Description -}}
+    {{- $pageTitle = printf "%s | Sacklink" .Title -}}
+    {{- $pageDesc  = .Description -}}
+  {{- else -}}
+    {{- $pageTitle = printf "%s | Sacklink" .Title -}}
+    {{- $pageDesc  = .Site.Params.description -}}
+  {{- end -}}
+
+  <title>{{ $pageTitle }}</title>
+  <meta name="description" content="{{ $pageDesc }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+  <meta property="og:site_name"   content="Sacklink" />
+  <meta property="og:url"         content="{{ .Permalink }}" />
+  <meta property="og:title"       content="{{ $pageTitle }}" />
+  <meta property="og:description" content="{{ $pageDesc }}" />
+  {{ with .Params.image -}}
+  <meta property="og:image" content="{{ . | absURL }}" />
+  {{- else -}}
+  <meta property="og:image" content="{{ "android-chrome-512x512.png" | absURL }}" />
+  {{- end }}
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="{{ $pageTitle }}" />
+  <meta name="twitter:description" content="{{ $pageDesc }}" />
+  {{ with .Params.image -}}
+  <meta name="twitter:image" content="{{ . | absURL }}" />
+  {{- else -}}
+  <meta name="twitter:image" content="{{ "android-chrome-512x512.png" | absURL }}" />
+  {{- end }}
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -25,6 +66,7 @@
 </head>
 <body>
   {{ block "main" . }}{{ end }}
+  {{ if not (eq .Kind "404") }}
   <script src="{{ "js/risk.js" | relURL }}"></script>
   <script src="{{ "js/chains.js" | relURL }}"></script>
   {{ if hasPrefix .RelPermalink "/cryptocurrencies" }}
@@ -40,6 +82,7 @@
   {{ else }}
   <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/app.js" | relURL }}"></script>
+  {{ end }}
   {{ end }}
 </body>
 </html>
