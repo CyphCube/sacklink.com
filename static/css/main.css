@@ -942,6 +942,57 @@ tbody tr.market-row {
 
 .footer-link:hover { color: var(--text-primary); }
 
+/* ── Blog post (single) ── */
+.post-header {
+  margin-bottom: 40px;
+}
+
+.post-back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+
+.post-back:hover { color: var(--text-primary); }
+
+.post-title {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.35;
+  margin: 0 0 12px;
+}
+
+.post-date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.post-content {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+.post-content p   { margin: 0 0 1.2em; }
+.post-content h2  { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600; margin: 2em 0 0.6em; color: var(--text-primary); }
+.post-content ul,
+.post-content ol  { padding-left: 1.4em; margin: 0 0 1.2em; }
+.post-content li  { margin-bottom: 0.4em; }
+.post-content ol  { list-style: decimal; }
+.post-content a   { color: var(--green); text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .post-title { font-size: 1.2rem; }
+}
+
 /* ── Blog page ── */
 .blog-section {
   max-width: 720px;
