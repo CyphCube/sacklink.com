@@ -1009,6 +1009,19 @@ tbody tr.market-row {
 
 .blog-card:hover .blog-card-title { color: var(--green); }
 
+.blog-card-image-wrap {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.blog-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .blog-card-body {
   display: flex;
   flex-direction: column;

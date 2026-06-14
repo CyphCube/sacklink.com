@@ -42,6 +42,11 @@
       <div class="blog-feed">
         {{ range .Pages.ByDate.Reverse }}
         <a class="blog-card" href="{{ .Permalink }}">
+          {{ with .Params.image }}
+          <div class="blog-card-image-wrap">
+            <img src="{{ . }}" alt="{{ $.Title }}" class="blog-card-image" loading="lazy" />
+          </div>
+          {{ end }}
           <div class="blog-card-body">
             {{ with .Params.category }}
             <span class="blog-tag">{{ . }}</span>
