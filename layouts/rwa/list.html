@@ -14,7 +14,6 @@
         <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
         <a class="nav-item active" href="/rwa/">RWA</a>
         <a class="nav-item" href="/wallets/">Wallets</a>
-        <a class="nav-item" href="/blog/">Blog</a>
       </nav>
       <div class="live-indicator">
         <span class="live-dot" aria-hidden="true"></span>
@@ -29,7 +28,6 @@
       <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
       <a class="nav-item active" href="/rwa/">RWA</a>
       <a class="nav-item" href="/wallets/">Wallets</a>
-      <a class="nav-item" href="/blog/">Blog</a>
     </nav>
   </header>
 
@@ -137,6 +135,24 @@
       <span class="footer-note">Auto-refreshes every 60s &middot; Data via <a href="https://defillama.com" target="_blank" rel="noopener" style="color:var(--text-secondary);text-decoration:underline">DefiLlama</a></span>
     </footer>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <a href="{{ "/" | relURL }}" class="footer-logo-link">
+          <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="footer-logo" />
+        </a>
+        <span class="footer-copy">&copy; {{ now.Year }} Sacklink</span>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a class="footer-link" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="footer-link" href="/cryptocurrencies/">Cryptocurrencies</a>
+        <a class="footer-link" href="/rwa/">RWA</a>
+        <a class="footer-link" href="/wallets/">Wallets</a>
+        <a class="footer-link" href="/blog/">Blog</a>
+      </nav>
+    </div>
+  </footer>
 
 </div>
 
