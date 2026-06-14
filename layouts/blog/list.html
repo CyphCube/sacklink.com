@@ -1,0 +1,73 @@
+{{ define "main" }}
+<div id="app">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <a href="{{ "/" | relURL }}" class="logo-link">
+          <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="site-logo" />
+        </a>
+      </div>
+      <nav class="main-nav">
+        <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+        <a class="nav-item" href="/rwa/">RWA</a>
+        <a class="nav-item" href="/wallets/">Wallets</a>
+        <a class="nav-item active" href="/blog/">Blog</a>
+      </nav>
+      <div class="live-indicator" style="visibility:hidden">
+        <span class="live-dot"></span>
+        <span class="live-label">Live rates</span>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+      <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+      <a class="nav-item" href="/rwa/">RWA</a>
+      <a class="nav-item" href="/wallets/">Wallets</a>
+      <a class="nav-item active" href="/blog/">Blog</a>
+    </nav>
+  </header>
+
+  <main class="blog-section">
+    <div class="blog-header">
+      <h1 class="blog-title">Blog</h1>
+      <p class="blog-subtitle">Insights on DeFi yields, stablecoins, and crypto markets</p>
+    </div>
+
+    {{ if .Pages }}
+    <div class="blog-list">
+      {{ range .Pages.ByDate.Reverse }}
+      <a class="blog-card" href="{{ .Permalink }}">
+        <div class="blog-card-meta">
+          <time class="blog-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+          {{ with .Params.category }}<span class="blog-category">{{ . }}</span>{{ end }}
+        </div>
+        <h2 class="blog-card-title">{{ .Title }}</h2>
+        {{ with .Summary }}<p class="blog-card-excerpt">{{ . }}</p>{{ end }}
+      </a>
+      {{ end }}
+    </div>
+    {{ else }}
+    <div class="blog-empty">
+      <p>No posts yet — check back soon.</p>
+    </div>
+    {{ end }}
+  </main>
+
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('hamburger');
+    var nav = document.getElementById('mobile-nav');
+    if(!btn||!nav) return;
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+  })();
+</script>
+{{ end }}
