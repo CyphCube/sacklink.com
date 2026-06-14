@@ -30,14 +30,31 @@
     </nav>
   </header>
 
-  <main class="blog-section">
-    <div class="post-header">
-      <a class="post-back" href="/blog/">&larr; Blog</a>
-      <h1 class="post-title">{{ .Title }}</h1>
-      <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-    </div>
-    <div class="post-content">
-      {{ .Content }}
+  <main class="blog-main">
+    <div class="post-container">
+
+      <div class="post-hero">
+        {{ with .Params.category }}
+        <span class="blog-tag">{{ . }}</span>
+        {{ end }}
+        <h1 class="post-hero-title">{{ .Title }}</h1>
+        <div class="post-hero-meta">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+          <span class="blog-meta-dot">·</span>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+      </div>
+
+      <div class="post-divider"></div>
+
+      <article class="post-content">
+        {{ .Content }}
+      </article>
+
+      <div class="post-footer">
+        <a class="post-back" href="/blog/">&larr; Back to Blog</a>
+      </div>
+
     </div>
   </main>
 
