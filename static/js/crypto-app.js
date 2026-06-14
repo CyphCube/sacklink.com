@@ -49,52 +49,35 @@
   }
 
   /* ── "New" badge tracking ── */
-  const NEW_BADGE_HOURS = 48;
-  const SEEN_KEY_CRYPTO  = 'sacklink_seen_crypto';
-  const INIT_KEY_CRYPTO  = 'sacklink_crypto_initialized';
-  const SEEN_VERSION     = 'v4';
+  const SEEN_KEY_CRYPTO = 'sacklink_seen_crypto';
+  const SEEN_VERSION    = 'v5';
 
   (function resetIfNeeded() {
     try {
-      if (localStorage.getItem(INIT_KEY_CRYPTO) !== SEEN_VERSION) {
+      const INIT_KEY = 'sacklink_crypto_initialized';
+      if (localStorage.getItem(INIT_KEY) !== SEEN_VERSION) {
         localStorage.removeItem(SEEN_KEY_CRYPTO);
-        localStorage.removeItem(INIT_KEY_CRYPTO);
+        localStorage.setItem(INIT_KEY, SEEN_VERSION);
       }
     } catch(e) {}
   })();
 
   function loadSeen() {
-    try { return JSON.parse(localStorage.getItem(SEEN_KEY_CRYPTO) || '{}'); }
-    catch(e) { return {}; }
+    try {
+      const raw = localStorage.getItem(SEEN_KEY_CRYPTO);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
   }
 
-  function saveSeen(seen) {
-    try { localStorage.setItem(SEEN_KEY_CRYPTO, JSON.stringify(seen)); }
-    catch(e) {}
+  function saveSeen(markets) {
+    const keys = {};
+    markets.forEach(r => { keys[r.slug + '|' + r.chain + '|' + r.token] = 1; });
+    try { localStorage.setItem(SEEN_KEY_CRYPTO, JSON.stringify(keys)); } catch(e) {}
   }
 
-  function updateSeen(markets) {
-    const seen = loadSeen();
-    const now  = Date.now();
-    markets.forEach(r => {
-      const key = r.slug + '|' + r.chain + '|' + r.token;
-      if (!seen[key]) {
-        seen[key] = now;
-      }
-    });
-    localStorage.setItem(INIT_KEY_CRYPTO, SEEN_VERSION);
-    Object.keys(seen).forEach(k => {
-      if (now - seen[k] > 30 * 24 * 3600 * 1000) delete seen[k];
-    });
-    saveSeen(seen);
-    return seen;
-  }
-
-  function isNew(slug, chain, token, seen) {
-    const key = slug + '|' + chain + '|' + token;
-    const first = seen[key];
-    if (!first) return false;
-    return (Date.now() - first) < NEW_BADGE_HOURS * 3600 * 1000;
+  function isNew(slug, chain, token, prevSeen) {
+    if (!prevSeen) return false;
+    return !prevSeen[slug + '|' + chain + '|' + token];
   }
 
   /* ── Filter / sort ── */
@@ -148,10 +131,8 @@
     document.getElementById('count-note').textContent =
       filtered.length + ' market' + (filtered.length !== 1 ? 's' : '');
 
-    const maxTVL = Math.max(...(window.CRYPTO_MARKETS || []).map(r => r.tvl), 1);
-    const seenBefore = loadSeen();
-    updateSeen(filtered.length ? filtered : (window.CRYPTO_MARKETS || []));
-    const seen = seenBefore;
+    const maxTVL  = Math.max(...(window.CRYPTO_MARKETS || []).map(r => r.tvl), 1);
+    const prevSeen = loadSeen();
 
     if (!sorted.length) {
       document.getElementById('tbody').innerHTML =
@@ -181,7 +162,7 @@
               <div class="protocol-name">
                 ${escHtml(truncate(r.protocol))}
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
-                ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
+                ${isNew(r.slug, r.chain, r.token, prevSeen) ? '<span class="new-tag">new</span>' : ''}
               </div>
               <div class="protocol-sub">#${r.id}</div>
             </div>
@@ -239,6 +220,7 @@
     try {
       await window.fetchCryptoMarkets();
       renderTable();
+      saveSeen(window.CRYPTO_MARKETS || []);
     } catch (err) {
       console.error('DefiLlama fetch failed:', err);
       if (!window.CRYPTO_MARKETS || !window.CRYPTO_MARKETS.length) {
