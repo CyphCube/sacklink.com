@@ -55,6 +55,7 @@ const CRYPTO_PROTOCOL_NAMES = {
   'scallop-lend':      'Scallop Lend',
   'scallop':           'Scallop Lend',
   'lido':              'Lido',
+  'fusion-by-ipor':    'Fusion by IPOR',
 };
 
 function cryptoProtocolName(slug) {
