@@ -37,63 +37,35 @@
 
 
   /* ── "New" badge tracking via localStorage ── */
-  const NEW_BADGE_DAYS = 3;
-  const SEEN_KEY = 'sacklink_seen_protocols';
+  const SEEN_KEY     = 'sacklink_seen_protocols';
+  const SEEN_VERSION = 'v3';
 
-  function loadSeen() {
-    try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); }
-    catch(e) { return {}; }
-  }
-
-  function saveSeen(seen) {
-    try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); }
-    catch(e) {}
-  }
-
-  const INITIALIZED_KEY = 'sacklink_initialized';
-  const SEEN_VERSION     = 'v2';
-
-  /* Reset if this is a new version (clears bad first-run data) */
   (function resetIfNeeded() {
     try {
-      if (localStorage.getItem(INITIALIZED_KEY) !== SEEN_VERSION) {
+      const INIT_KEY = 'sacklink_initialized';
+      if (localStorage.getItem(INIT_KEY) !== SEEN_VERSION) {
         localStorage.removeItem(SEEN_KEY);
-        localStorage.removeItem(INITIALIZED_KEY);
+        localStorage.setItem(INIT_KEY, SEEN_VERSION);
       }
     } catch(e) {}
   })();
 
-  function updateSeen(markets) {
-    const seen = loadSeen();
-    const now  = Date.now();
-    const isFirstRun = !localStorage.getItem(INITIALIZED_KEY);
-
-    markets.forEach(r => {
-      const key = r.slug + '|' + r.chain + '|' + r.token;
-      if (!seen[key]) {
-        /* On first run, backdate to before the NEW_BADGE_DAYS window
-           so existing protocols never show the badge */
-        seen[key] = isFirstRun
-          ? now - (NEW_BADGE_DAYS + 1) * 86400 * 1000
-          : now;
-      }
-    });
-
-    if (isFirstRun) localStorage.setItem(INITIALIZED_KEY, SEEN_VERSION);
-
-    // Prune entries older than 30 days
-    Object.keys(seen).forEach(k => {
-      if (now - seen[k] > 30 * 86400 * 1000) delete seen[k];
-    });
-    saveSeen(seen);
-    return seen;
+  function loadSeen() {
+    try {
+      const raw = localStorage.getItem(SEEN_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
   }
 
-  function isNew(slug, chain, token, seen) {
-    const key = slug + '|' + chain + '|' + token;
-    const first = seen[key];
-    if (!first) return false;
-    return (Date.now() - first) < NEW_BADGE_DAYS * 86400 * 1000;
+  function saveSeen(markets) {
+    const keys = {};
+    markets.forEach(r => { keys[r.slug + '|' + r.chain + '|' + r.token] = 1; });
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(keys)); } catch(e) {}
+  }
+
+  function isNew(slug, chain, token, prevSeen) {
+    if (!prevSeen) return false;
+    return !prevSeen[slug + '|' + chain + '|' + token];
   }
 
   function chainDisplayName(chain) {
@@ -154,7 +126,7 @@
     document.getElementById('count-note').textContent =
       filtered.length + ' market' + (filtered.length !== 1 ? 's' : '');
 
-    const seen   = updateSeen(filtered.length ? filtered : (window.MARKETS || []));
+    const prevSeen = loadSeen();
     const maxTVL = Math.max(...(window.MARKETS || []).map(r => r.tvl), 1);
 
     if (!sorted.length) {
@@ -192,7 +164,7 @@
               <div class="protocol-name">
                 ${escHtml(r.protocol)}
                 ${i === 0 ? '<span class="best-tag">top</span>' : ''}
-                ${isNew(r.slug, r.chain, r.token, seen) ? '<span class="new-tag">new</span>' : ''}
+                ${isNew(r.slug, r.chain, r.token, prevSeen) ? '<span class="new-tag">new</span>' : ''}
               </div>
               <div class="protocol-sub">#${r.id}</div>
             </div>
@@ -252,6 +224,7 @@
     try {
       await window.fetchMarkets();
       renderTable();
+      saveSeen(window.MARKETS || []);
     } catch (err) {
       console.error('DefiLlama fetch failed:', err);
       if (!window.MARKETS || !window.MARKETS.length) {
