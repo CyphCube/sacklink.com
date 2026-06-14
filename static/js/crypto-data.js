@@ -7,10 +7,10 @@ const CRYPTO_ALLOWED_CHAINS = new Set([
   'Avalanche', 'Solana', 'BSC', 'Sui', 'Hyperliquid', 'Hyperliquid L1'
 ]);
 
-const CRYPTO_TOKENS = new Set(['ETH', 'WETH', 'BTC', 'WBTC', 'BTCB', 'SOL', 'WSOL', 'SUI', 'HYPE']);
+const CRYPTO_TOKENS = new Set(['ETH', 'WETH', 'STETH', 'BTC', 'WBTC', 'BTCB', 'SOL', 'WSOL', 'SUI', 'HYPE']);
 
 const CRYPTO_TOKEN_DISPLAY = {
-  'ETH': 'ETH', 'WETH': 'ETH',
+  'ETH': 'ETH', 'WETH': 'ETH', 'STETH': 'ETH',
   'BTC': 'BTC', 'WBTC': 'BTC', 'BTCB': 'BTC',
   'SOL': 'SOL', 'WSOL': 'SOL',
   'SUI': 'SUI',
@@ -54,6 +54,7 @@ const CRYPTO_PROTOCOL_NAMES = {
   'navi':              'Navi Lending',
   'scallop-lend':      'Scallop Lend',
   'scallop':           'Scallop Lend',
+  'lido':              'Lido',
 };
 
 function cryptoProtocolName(slug) {
@@ -172,6 +173,7 @@ const CRYPTO_FALLBACK_URLS = {
   'hypurrfi-pooled':   () => 'https://app.hypurr.fi/',
   'felix':             () => 'https://app.felix.finance/',
   'hyperdrive':        () => 'https://hyperdrive.fi/',
+  'lido':              () => 'https://lido.fi/',
 };
 
 function cryptoResolveUrl(pool) {
