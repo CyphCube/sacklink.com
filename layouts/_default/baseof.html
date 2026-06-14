@@ -33,7 +33,7 @@
   {{ with .Params.image -}}
   <meta property="og:image" content="{{ . | absURL }}" />
   {{- else -}}
-  <meta property="og:image" content="{{ "android-chrome-512x512.png" | absURL }}" />
+  <meta property="og:image" content="{{ "og-image.png" | absURL }}" />
   {{- end }}
 
   <!-- Twitter Card -->
@@ -43,7 +43,7 @@
   {{ with .Params.image -}}
   <meta name="twitter:image" content="{{ . | absURL }}" />
   {{- else -}}
-  <meta name="twitter:image" content="{{ "android-chrome-512x512.png" | absURL }}" />
+  <meta name="twitter:image" content="{{ "og-image.png" | absURL }}" />
   {{- end }}
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
