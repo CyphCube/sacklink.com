@@ -1,6 +1,9 @@
 baseURL = "https://sacklink.com/"
 languageCode = "en-us"
 title = "Sacklink"
+
+disableKinds = ["taxonomy", "term"]
+
 [params]
   description = "Stablecoin lending rates across major chains"
   tagline = "USDC & USDT yield aggregator"

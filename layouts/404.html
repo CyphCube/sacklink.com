@@ -1,0 +1,61 @@
+{{ define "main" }}
+<div id="app">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <a href="{{ "/" | relURL }}" class="logo-link">
+          <img src="{{ "logo.webp" | relURL }}" alt="Sacklink" class="site-logo" />
+        </a>
+      </div>
+      <nav class="main-nav">
+        <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+        <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+        <a class="nav-item" href="/rwa/">RWA</a>
+        <a class="nav-item" href="/wallets/">Wallets</a>
+      </nav>
+      <div class="live-indicator" style="visibility:hidden">
+        <span class="live-dot"></span>
+        <span class="live-label">Live rates</span>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a class="nav-item" href="{{ "/" | relURL }}">Stablecoins</a>
+      <a class="nav-item" href="/cryptocurrencies/">Cryptocurrencies</a>
+      <a class="nav-item" href="/rwa/">RWA</a>
+      <a class="nav-item" href="/wallets/">Wallets</a>
+    </nav>
+  </header>
+
+  <main class="not-found-section">
+    <div class="not-found-inner">
+      <div class="not-found-code">404</div>
+      <h1 class="not-found-title">Page not found</h1>
+      <p class="not-found-sub">The page you're looking for doesn't exist.</p>
+      <a class="not-found-home" href="{{ "/" | relURL }}">← Back to home</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-copy">&copy; {{ now.Year }} Sacklink</span>
+      <a class="footer-link" href="/blog/">Blog</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('hamburger');
+    var nav = document.getElementById('mobile-nav');
+    if(!btn||!nav) return;
+    btn.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    });
+  })();
+</script>
+{{ end }}
