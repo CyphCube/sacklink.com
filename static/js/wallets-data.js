@@ -125,7 +125,7 @@ window.WALLETS = [
   },
   {
     name:       'Xaman',
-    logo:       'https://www.google.com/s2/favicons?domain=xaman.app&sz=64',
+    logo:       'https://xaman.app/favicon.ico',
     url:        'https://xaman.app',
     platforms:  ['iOS', 'Android'],
     tokens:     ['XRP'],
