@@ -236,12 +236,25 @@ const POOL_URLS = {
 
 window.CRYPTO_MARKETS = [];
 
-window.fetchCryptoMarkets = async function () {
-  const res  = await fetch('https://yields.llama.fi/pools');
-  if (!res.ok) throw new Error('DefiLlama API error: ' + res.status);
-  const json = await res.json();
+const _CACHE_KEY_CRYPTO = 'sacklink_cache_crypto';
+const _CACHE_TTL_CRYPTO = 5 * 60 * 1000;
 
-  const pools = (json.data || []).filter(p => {
+function _loadCacheCrypto() {
+  try {
+    const raw = localStorage.getItem(_CACHE_KEY_CRYPTO);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > _CACHE_TTL_CRYPTO) return null;
+    return data;
+  } catch(e) { return null; }
+}
+
+function _saveCacheCrypto(data) {
+  try { localStorage.setItem(_CACHE_KEY_CRYPTO, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
+}
+
+async function _processCryptoMarkets(json) {
+  const pools = ((json && json.data) || []).filter(p => {
     if (!CRYPTO_ALLOWED_CHAINS.has(p.chain))      return false;
     if (p.status !== 'active' && p.status)         return false;
     if (!p.symbol)                                  return false;
@@ -274,5 +287,23 @@ window.fetchCryptoMarkets = async function () {
     });
   try { localStorage.setItem(ID_KEY, JSON.stringify(_idMap)); } catch(e) {}
 
+  return window.CRYPTO_MARKETS;
+}
+
+window.fetchCryptoMarkets = async function () {
+  const cached = _loadCacheCrypto();
+  if (cached) {
+    window.CRYPTO_MARKETS = cached;
+    fetch('https://yields.llama.fi/pools')
+      .then(r => r.ok ? r.json() : null)
+      .then(json => json ? _processCryptoMarkets(json).then(() => _saveCacheCrypto(window.CRYPTO_MARKETS)) : null)
+      .catch(() => {});
+    return window.CRYPTO_MARKETS;
+  }
+  const res = await fetch('https://yields.llama.fi/pools');
+  if (!res.ok) throw new Error('DefiLlama API error: ' + res.status);
+  const json = await res.json();
+  await _processCryptoMarkets(json);
+  _saveCacheCrypto(window.CRYPTO_MARKETS);
   return window.CRYPTO_MARKETS;
 };

@@ -526,12 +526,33 @@ const POOL_URLS = {
 
 window.MARKETS = [];
 
-window.fetchMarkets = async function () {
+const _CACHE_KEY_STABLE = 'sacklink_cache_stable';
+const _CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function _loadCache(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > _CACHE_TTL) return null;
+    return data;
+  } catch(e) { return null; }
+}
+
+function _saveCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
+}
+
+async function _doFetchMarkets() {
   const res  = await fetch('https://yields.llama.fi/pools');
   if (!res.ok) throw new Error('DefiLlama API error: ' + res.status);
   const json = await res.json();
+  return json;
+}
 
-  const pools = (json.data || []).filter(p => {
+async function _processMarkets(json) {
+
+  const pools = ((json && json.data) || []).filter(p => {
     if (!ALLOWED_CHAINS.has(p.chain))      return false;
     if (p.status !== 'active' && p.status) return false;
     if (!p.symbol)                          return false;
@@ -587,5 +608,25 @@ window.fetchMarkets = async function () {
     }));
   }
 
+  return window.MARKETS;
+}
+
+window.fetchMarkets = async function () {
+  const cached = _loadCache(_CACHE_KEY_STABLE);
+  if (cached) {
+    /* Serve from cache immediately */
+    window.MARKETS = cached;
+    /* Revalidate in background */
+    _doFetchMarkets().then(json => {
+      _processMarkets(json).then(() => {
+        _saveCache(_CACHE_KEY_STABLE, window.MARKETS);
+      }).catch(() => {});
+    }).catch(() => {});
+    return window.MARKETS;
+  }
+  /* No cache — fetch and wait */
+  const json = await _doFetchMarkets();
+  await _processMarkets(json);
+  _saveCache(_CACHE_KEY_STABLE, window.MARKETS);
   return window.MARKETS;
 };

@@ -143,12 +143,25 @@ const POOL_URLS = {
 
 window.RWA_MARKETS = [];
 
-window.fetchRwaMarkets = async function () {
-  const res  = await fetch('https://yields.llama.fi/pools');
-  if (!res.ok) throw new Error('DefiLlama API error: ' + res.status);
-  const json = await res.json();
+const _CACHE_KEY_RWA = 'sacklink_cache_rwa';
+const _CACHE_TTL_RWA = 5 * 60 * 1000;
 
-  const pools = (json.data || []).filter(p => {
+function _loadCacheRwa() {
+  try {
+    const raw = localStorage.getItem(_CACHE_KEY_RWA);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > _CACHE_TTL_RWA) return null;
+    return data;
+  } catch(e) { return null; }
+}
+
+function _saveCacheRwa(data) {
+  try { localStorage.setItem(_CACHE_KEY_RWA, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
+}
+
+async function _processRwaMarkets(json) {
+  const pools = ((json && json.data) || []).filter(p => {
     if (!RWA_ALLOWED_CHAINS.has(p.chain))      return false;
     if (p.status !== 'active' && p.status)      return false;
     if (!p.symbol)                               return false;
@@ -192,5 +205,23 @@ window.fetchRwaMarkets = async function () {
     });
   try { localStorage.setItem(ID_KEY, JSON.stringify(_idMap)); } catch(e) {}
 
+  return window.RWA_MARKETS;
+}
+
+window.fetchRwaMarkets = async function () {
+  const cached = _loadCacheRwa();
+  if (cached) {
+    window.RWA_MARKETS = cached;
+    fetch('https://yields.llama.fi/pools')
+      .then(r => r.ok ? r.json() : null)
+      .then(json => json ? _processRwaMarkets(json).then(() => _saveCacheRwa(window.RWA_MARKETS)) : null)
+      .catch(() => {});
+    return window.RWA_MARKETS;
+  }
+  const res = await fetch('https://yields.llama.fi/pools');
+  if (!res.ok) throw new Error('DefiLlama API error: ' + res.status);
+  const json = await res.json();
+  await _processRwaMarkets(json);
+  _saveCacheRwa(window.RWA_MARKETS);
   return window.RWA_MARKETS;
 };
