@@ -35,10 +35,15 @@
     const wallets = window.WALLETS || [];
     if (!wallets.length) return;
     const tokens  = new Set(wallets.flatMap(w => w.tokens || []));
-    const top     = wallets.reduce((a, b) => {
-      function toNum(m) { return parseFloat(m) || 0; }
-      return toNum(a.mau) >= toNum(b.mau) ? a : b;
-    });
+    function parseMau(m) {
+      if (!m) return 0;
+      const n = parseFloat(m);
+      if (/[Bb]/.test(m)) return n * 1e9;
+      if (/[Mm]/.test(m)) return n * 1e6;
+      if (/[Kk]/.test(m)) return n * 1e3;
+      return n;
+    }
+    const top = wallets.reduce((a, b) => parseMau(a.mau) >= parseMau(b.mau) ? a : b);
     const oss = wallets.filter(w => w.openSource).length;
     set('w-count',  wallets.length);
     set('w-tokens', tokens.size);
