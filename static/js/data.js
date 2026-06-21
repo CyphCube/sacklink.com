@@ -427,6 +427,19 @@ const FALLBACK_URLS = {
   'scallop':                        () => 'https://app.scallop.io/',
   'kai-finance':                    () => 'https://kai.finance/vaults',
   'kai':                            () => 'https://kai.finance/vaults',
+  'aave-v4':                        () => 'https://app.aave.com/markets/',
+  'azuro':                          () => 'https://azuro.org/',
+  'convex-finance':                 () => 'https://www.convexfinance.com/',
+  'curve-llamalend':                () => 'https://lend.curve.fi/',
+  'ethena-usde':                    () => 'https://app.ethena.fi/',
+  'fraxlend':                       () => 'https://fraxlend.com/',
+  'native-credit-pool':             () => 'https://native.org/',
+  'ondo-yield-assets':              () => 'https://ondo.finance/',
+  'pendle':                         () => 'https://app.pendle.finance/trade/pools',
+  'resupply':                       () => 'https://resupply.fi/',
+  'sky-lending':                    () => 'https://app.sky.money/',
+  'venus-core-pool':                () => 'https://app.venus.io/markets',
+  'venus-flux':                     () => 'https://app.venus.io/markets',
 };
 
 

@@ -175,6 +175,18 @@ const CRYPTO_FALLBACK_URLS = {
   'felix':             () => 'https://app.felix.finance/',
   'hyperdrive':        () => 'https://hyperdrive.fi/',
   'lido':              () => 'https://lido.fi/',
+  'aave-v4':           () => 'https://app.aave.com/markets/',
+  'autofinance':       () => 'https://autofinance.fi/',
+  'bancor-v3':         () => 'https://app.bancor.network/',
+  'extra-finance-leverage-farming': () => 'https://app.extrafi.io/lend',
+  'kinza-finance':     () => 'https://app.kinza.finance/',
+  'lazy-summer-protocol': () => 'https://app.summer.fi/',
+  'moonwell-lending':  () => 'https://moonwell.fi/markets',
+  'native-credit-pool': () => 'https://native.org/',
+  'navi-lending':      () => 'https://app.naviprotocol.io/',
+  'tramplin.io':       () => 'https://tramplin.io/',
+  'venus-core-pool':   () => 'https://app.venus.io/markets',
+  'yo-protocol':       () => 'https://yo.xyz/',
 };
 
 function cryptoResolveUrl(pool) {
