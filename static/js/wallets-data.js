@@ -2,7 +2,7 @@
    Update mau values manually as needed.
 
    platforms: 'iOS' | 'Android' | 'Extension' | 'Desktop' | 'Hardware'
-   tokens:    'BTC' | 'ETH' | 'SOL' | 'BNB' | 'SUI' | 'HYPE'
+   tokens:    'BTC' | 'ETH' | 'SOL' | 'BNB' | 'SUI' | 'HYPE' | 'XRP' | 'XLM'
 */
 
 window.WALLETS = [
@@ -20,7 +20,7 @@ window.WALLETS = [
     logo:       'https://icons.llamao.fi/icons/protocols/trust-wallet?w=48&h=48',
     url:        'https://trustwallet.com',
     platforms:  ['iOS', 'Android', 'Extension'],
-    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI', 'XRP', 'XLM'],
     mau:        '17M+',
     openSource: true,
   },
@@ -56,7 +56,7 @@ window.WALLETS = [
     logo:       'https://www.google.com/s2/favicons?domain=exodus.com&sz=64',
     url:        'https://www.exodus.com',
     platforms:  ['iOS', 'Android', 'Desktop', 'Extension'],
-    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI', 'XRP', 'XLM'],
     mau:        '1.5M+',
     openSource: false,
   },
@@ -74,7 +74,7 @@ window.WALLETS = [
     logo:       'https://icons.llamao.fi/icons/protocols/okx?w=48&h=48',
     url:        'https://www.okx.com/web3',
     platforms:  ['iOS', 'Android', 'Extension', 'Desktop'],
-    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI', 'XRP'],
     mau:        '20M+',
     openSource: false,
   },
@@ -101,7 +101,7 @@ window.WALLETS = [
     logo:       'https://www.google.com/s2/favicons?domain=ledger.com&sz=64',
     url:        'https://www.ledger.com',
     platforms:  ['iOS', 'Android', 'Hardware', 'Desktop'],
-    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI', 'HYPE'],
+    tokens:     ['BTC', 'ETH', 'SOL', 'BNB', 'SUI', 'HYPE', 'XRP', 'XLM'],
     mau:        '6M+',
     openSource: false,
   },
@@ -110,7 +110,7 @@ window.WALLETS = [
     logo:       'https://www.google.com/s2/favicons?domain=trezor.io&sz=64',
     url:        'https://trezor.io',
     platforms:  ['iOS', 'Android', 'Hardware', 'Desktop'],
-    tokens:     ['BTC', 'ETH', 'BNB'],
+    tokens:     ['BTC', 'ETH', 'BNB', 'XRP'],
     mau:        '1M+',
     openSource: true,
   },
@@ -122,6 +122,24 @@ window.WALLETS = [
     tokens:     ['ETH', 'BNB'],
     mau:        '500K+',
     openSource: true,
+  },
+  {
+    name:       'Xaman',
+    logo:       'https://www.google.com/s2/favicons?domain=xaman.app&sz=64',
+    url:        'https://xaman.app',
+    platforms:  ['iOS', 'Android'],
+    tokens:     ['XRP'],
+    mau:        '2M+',
+    openSource: false,
+  },
+  {
+    name:       'LOBSTR',
+    logo:       'https://www.google.com/s2/favicons?domain=lobstr.co&sz=64',
+    url:        'https://lobstr.co',
+    platforms:  ['iOS', 'Android', 'Extension'],
+    tokens:     ['XLM'],
+    mau:        '600K+',
+    openSource: false,
   },
   {
     name:       'Slush',

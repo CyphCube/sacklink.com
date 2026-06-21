@@ -85,7 +85,7 @@
         return `<span class="platform-badge" title="${escHtml(p)}">${svg}</span>`;
       }).join('');
 
-      const TOKEN_SLUGS = {'BTC': ['bitcoin', '#F7931A'], 'ETH': ['ethereum', '#627EEA'], 'SOL': ['solana', '#9945FF'], 'BNB': ['bsc', '#F0B90B'], 'SUI': ['sui', '#6FBCF0'], 'HYPE': ['hyperliquid-l1', '#00E5C0']};
+      const TOKEN_SLUGS = {'BTC': ['bitcoin', '#F7931A'], 'ETH': ['ethereum', '#627EEA'], 'SOL': ['solana', '#9945FF'], 'BNB': ['bsc', '#F0B90B'], 'SUI': ['sui', '#6FBCF0'], 'HYPE': ['hyperliquid-l1', '#00E5C0'], 'XRP': ['xrpl', '#346AA9'], 'XLM': ['stellar', '#7B7BEE']};
       const tokens = (w.tokens || []).map(t => {
         const info = TOKEN_SLUGS[t];
         if (info) {
