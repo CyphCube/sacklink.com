@@ -846,8 +846,11 @@ tbody tr.market-row {
   border-radius: 6px;
 }
 
-.platform-badge svg {
+.platform-badge svg,
+.platform-badge img {
   display: block;
+  width: 18px;
+  height: 18px;
 }
 
 .token-pills-wrap {
@@ -904,9 +907,10 @@ tbody tr.market-row {
   height: 14px;
 }
 
-.platform-btn-logo svg {
-  width: 14px;
-  height: 14px;
+.platform-btn-logo svg,
+.platform-btn-logo img {
+  width: 16px;
+  height: 16px;
   display: block;
 }
 
