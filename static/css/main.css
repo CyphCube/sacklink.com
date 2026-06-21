@@ -1221,3 +1221,120 @@ tbody tr.market-row {
 
 .not-found-home:hover { opacity: 0.85; }
 
+/* ── Homepage ── */
+.home-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.home-hero {
+  text-align: center;
+  padding: 4rem 0 3rem;
+}
+
+.home-title {
+  font-family: var(--font-sans);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+  line-height: 1.15;
+}
+
+.home-sub {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.home-card {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.home-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.home-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.home-card-label {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.home-card-arrow {
+  font-size: 1.1rem;
+  color: var(--accent);
+  transition: transform 0.15s;
+}
+
+.home-card:hover .home-card-arrow {
+  transform: translateX(3px);
+}
+
+.home-card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.25rem;
+  line-height: 1.5;
+}
+
+.home-card-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.home-stat {
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+}
+
+.home-stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+
+.home-stat-value {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.home-stat-value.green { color: var(--green); }
+
+@media (max-width: 700px) {
+  .home-grid { grid-template-columns: 1fr; }
+  .home-title { font-size: 1.7rem; }
+  .home-hero { padding: 2.5rem 0 2rem; }
+  .home-card-stats { grid-template-columns: repeat(2, 1fr); }
+}
+

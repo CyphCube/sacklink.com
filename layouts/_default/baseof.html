@@ -78,9 +78,13 @@
   {{ else if hasPrefix .RelPermalink "/wallets" }}
   <script src="{{ "js/wallets-data.js" | relURL }}"></script>
   <script src="{{ "js/wallets-app.js" | relURL }}"></script>
-  {{ else }}
+  {{ else if hasPrefix .RelPermalink "/stablecoins" }}
   <script src="{{ "js/data.js" | relURL }}"></script>
   <script src="{{ "js/app.js" | relURL }}"></script>
+  {{ else if .IsHome }}
+  <script src="{{ "js/wallets-data.js" | relURL }}"></script>
+  <script src="{{ "js/home-data.js" | relURL }}"></script>
+  <script src="{{ "js/home-app.js" | relURL }}"></script>
   {{ end }}
   {{ end }}
 </body>

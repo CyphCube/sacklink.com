@@ -1,4 +1,4 @@
 ---
-title: "yield.fi"
-description: "USDC & USDT lending rates across major chains"
+title: "Sacklink"
+description: "Compare DeFi yield rates across stablecoins, cryptocurrencies, and real-world assets — plus the best crypto wallets."
 ---
