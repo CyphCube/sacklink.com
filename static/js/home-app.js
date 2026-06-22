@@ -53,11 +53,18 @@
 
   async function init() {
     renderWallets();
-    try {
-      const summary = await window.fetchHomeSummary();
-      renderSummary(summary);
-    } catch(e) {
-      console.error('Home data fetch failed:', e);
+
+    /* Paint cached numbers instantly (any age) */
+    const cached = window.getHomeSummaryCached();
+    if (cached) renderSummary(cached.data);
+
+    /* Only hit the network if cache is missing or stale */
+    if (!cached || !cached.fresh) {
+      try {
+        renderSummary(await window.fetchHomeSummaryFresh());
+      } catch(e) {
+        console.error('Home data fetch failed:', e);
+      }
     }
   }
 

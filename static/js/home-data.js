@@ -21,8 +21,7 @@
       const raw = localStorage.getItem(CACHE_KEY);
       if (!raw) return null;
       const { ts, data } = JSON.parse(raw);
-      if (Date.now() - ts > CACHE_TTL) return null;
-      return data;
+      return { data, fresh: Date.now() - ts <= CACHE_TTL };
     } catch(e) { return null; }
   }
 
@@ -79,15 +78,11 @@
     };
   }
 
-  window.fetchHomeSummary = async function () {
-    const cached = loadCache();
-    if (cached) {
-      fetch('https://yields.llama.fi/pools')
-        .then(r => r.ok ? r.json() : null)
-        .then(json => json ? saveCache(compute(json)) : null)
-        .catch(() => {});
-      return cached;
-    }
+  /* Returns { data, fresh } from cache (any age), or null if never cached. Synchronous. */
+  window.getHomeSummaryCached = loadCache;
+
+  /* Fetches live data, updates cache, resolves with fresh summary. */
+  window.fetchHomeSummaryFresh = async function () {
     const res = await fetch('https://yields.llama.fi/pools');
     if (!res.ok) throw new Error('DefiLlama API error');
     const json = await res.json();
