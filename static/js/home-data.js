@@ -3,17 +3,38 @@
 (function () {
   'use strict';
 
-  const STABLE_TOKENS = new Set(['USDC','USDT','DAI','FRAX','LUSD','BUSD','GUSD','USDP','TUSD','USDD','CRVUSD','PYUSD','USDM','EURC','USDS','SUSDE','USDE','USDY','GHO','FDUSD','EUSD','SUSDS','RLUSD']);
-  const STABLE_CHAINS = new Set(['Ethereum','Arbitrum','Base','Optimism','Polygon','Avalanche','BSC','Solana']);
+  /* ── Filters MUST stay in sync with the page data files ──
+     stablecoins → data.js · cryptocurrencies → crypto-data.js · rwa → rwa-data.js
+     so the homepage summary matches each page exactly. */
 
+  /* Stablecoins (data.js): USDC/USDT only */
+  const STABLE_CHAINS    = new Set(['Ethereum','Arbitrum','Base','Polygon','Avalanche','Solana','BSC','Sui']);
+  const STABLE_EXCLUDED  = new Set([
+    'euler-v2|Avalanche|USDC',
+    'credix|Ethereum|USDC','credix|Ethereum|USDT','credix|Arbitrum|USDC','credix|Arbitrum|USDT',
+    'credix|Polygon|USDC','credix|Polygon|USDT','credix|Solana|USDC','credix|Solana|USDT',
+    'credix|Base|USDC','credix|Base|USDT','credix|BSC|USDC','credix|BSC|USDT',
+    'credix|Sui|USDC','credix|Sui|USDT',
+    'allbridge-classic|Ethereum|USDC','allbridge-classic|Ethereum|USDT',
+    'allbridge-classic|Arbitrum|USDC','allbridge-classic|Arbitrum|USDT',
+    'allbridge-classic|Polygon|USDC','allbridge-classic|Polygon|USDT',
+    'allbridge-classic|Solana|USDC','allbridge-classic|Solana|USDT',
+    'allbridge-classic|Base|USDC','allbridge-classic|Base|USDT',
+    'allbridge-classic|BSC|USDC','allbridge-classic|BSC|USDT',
+    'allbridge-classic|Sui|USDC','allbridge-classic|Sui|USDT',
+  ]);
+
+  /* Cryptocurrencies (crypto-data.js) */
   const CRYPTO_TOKENS = new Set(['ETH','WETH','STETH','BTC','WBTC','BTCB','SOL','WSOL','SUI','HYPE']);
-  const CRYPTO_CHAINS = new Set(['Ethereum','Arbitrum','Base','Optimism','Polygon','Avalanche','BSC','Solana','Sui','Hyperliquid','Hyperliquid L1']);
+  const CRYPTO_CHAINS = new Set(['Ethereum','Arbitrum','Base','Polygon','Avalanche','Solana','BSC','Sui','Hyperliquid','Hyperliquid L1']);
 
-  const RWA_CATEGORIES = new Set(['RWA','Real World Assets','Treasury','Treasury Bills','Money Market Fund']);
-  const RWA_PROJECTS   = new Set(['ondo-finance','maple','goldfinch','clearpool','superstate','backed-finance','openeden','matrixdock','spiko','hashnote','mountain-protocol','midas','dinari','swarm','flux-finance','etherfuse','franklin-templeton','blackrock-buidl','buidl','agora','m0','truefi','yieldnest','libre']);
-  const RWA_EXCLUDED   = new Set(['USDC','USDT','DAI','ETH','WETH','BTC','WBTC','SOL','BNB']);
+  /* RWA (rwa-data.js) */
+  const RWA_CHAINS     = new Set(['Ethereum','Solana','BSC','Aptos','Stellar','Avalanche','XRPL','Sui','Base']);
+  const RWA_CATEGORIES = new Set(['RWA','Real World Assets','Tokenized Treasury','Tokenized Stocks','Tokenized Commodities','Undercollateralized Lending','Institutional']);
+  const RWA_PROJECTS   = new Set(['ondo-finance','ondo','maple','maple-finance','centrifuge','goldfinch','truefi','credix','clearpool','superstate','backed-finance','openeden','matrixdock','spiko','hashnote','steakhouse','bprotocol','janus-henderson','franklin-templeton','blackrock-buidl','buidl','mountain-protocol','m0','agora','midas','dinari','swarm','tangible','parcl','realtoken','lofty','landshare','houseloan','yieldnest','securitize','tokeny','libre','etherfuse','popcorn','flux-finance']);
+  const RWA_EXCLUDED   = new Set(['USDC','USDT','YNETHX','YNLSDE','YNETH']);
 
-  const CACHE_KEY = 'sacklink_cache_home';
+  const CACHE_KEY = 'sacklink_cache_home_v2';
   const CACHE_TTL = 5 * 60 * 1000;
 
   function loadCache() {
@@ -37,44 +58,53 @@
     return { best, avg, tvl, count: pools.length };
   }
 
+  function dedup(pools) {
+    const seen = new Map();
+    pools.forEach(p => {
+      const k = `${p.project}|${p.chain}|${p.symbol.toUpperCase()}`;
+      if (!seen.has(k) || p.tvlUsd > seen.get(k).tvlUsd) seen.set(k, p);
+    });
+    return Array.from(seen.values());
+  }
+
   function compute(json) {
     const all = json.data || [];
     const active = p => !p.status || p.status === 'active';
 
-    const stablePools = all.filter(p =>
-      active(p) && p.symbol && STABLE_CHAINS.has(p.chain) &&
-      STABLE_TOKENS.has(p.symbol.toUpperCase()) &&
-      (p.apy || 0) > 0 && (p.tvlUsd || 0) >= 1e6
-    );
-    const seen = new Map();
-    stablePools.forEach(p => {
-      const k = `${p.project}|${p.chain}|${p.symbol.toUpperCase()}`;
-      if (!seen.has(k) || p.tvlUsd > seen.get(k).tvlUsd) seen.set(k, p);
+    /* Stablecoins — mirrors data.js (USDC/USDT only, exclusions, dedup) */
+    const stablePools = all.filter(p => {
+      if (!active(p) || !p.symbol) return false;
+      if (!STABLE_CHAINS.has(p.chain)) return false;
+      const sym = p.symbol.toUpperCase();
+      if (sym !== 'USDC' && sym !== 'USDT') return false;
+      if ((p.apy || 0) <= 0 || (p.tvlUsd || 0) < 1e6) return false;
+      if (p.project === 'centrifuge-protocol') return false;
+      const tok = sym.includes('USDC') ? 'USDC' : 'USDT';
+      if (STABLE_EXCLUDED.has(`${p.project}|${p.chain}|${tok}`)) return false;
+      return true;
     });
 
+    /* Cryptocurrencies — mirrors crypto-data.js (no dedup) */
     const cryptoPools = all.filter(p =>
       active(p) && p.symbol && CRYPTO_CHAINS.has(p.chain) &&
       CRYPTO_TOKENS.has(p.symbol.toUpperCase()) &&
       (p.apy || 0) > 0 && (p.tvlUsd || 0) >= 1e6
     );
 
+    /* RWA — mirrors rwa-data.js (chain filter, category/project match, dedup) */
     const rwaPools = all.filter(p => {
       if (!active(p) || !p.symbol) return false;
+      if (!RWA_CHAINS.has(p.chain)) return false;
       if ((p.apy || 0) <= 0 || (p.tvlUsd || 0) < 1e6) return false;
       if (RWA_EXCLUDED.has(p.symbol.toUpperCase())) return false;
       const cat = (p.category || '').trim();
       return RWA_CATEGORIES.has(cat) || RWA_PROJECTS.has(p.project);
     });
-    const rwaDedup = new Map();
-    rwaPools.forEach(p => {
-      const k = `${p.project}|${p.chain}|${p.symbol.toUpperCase()}`;
-      if (!rwaDedup.has(k) || p.tvlUsd > rwaDedup.get(k).tvlUsd) rwaDedup.set(k, p);
-    });
 
     return {
-      stable: summarise(Array.from(seen.values())),
+      stable: summarise(dedup(stablePools)),
       crypto: summarise(cryptoPools),
-      rwa:    summarise(Array.from(rwaDedup.values())),
+      rwa:    summarise(dedup(rwaPools)),
     };
   }
 
